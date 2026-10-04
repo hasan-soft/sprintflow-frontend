@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const demoRoles = [
   { role: "ADMIN", label: "Continue as Admin", destination: "/admin" },
@@ -13,10 +14,21 @@ export default function DemoLogin() {
   const router = useRouter();
   const [pendingRole, setPendingRole] = useState<string | null>(null);
 
-  function signIn(role: (typeof demoRoles)[number]) {
+  async function signIn(role: (typeof demoRoles)[number]) {
     setPendingRole(role.role);
-    document.cookie = `sprintflow-role=${role.role}; Path=/; Max-Age=28800; SameSite=Lax`;
-    router.push(role.destination);
+    try {
+      const response = await fetch("/api/demo-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role: role.role }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error ?? "Demo sign-in is currently unavailable.");
+      router.push(role.destination);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Demo sign-in is currently unavailable.");
+      setPendingRole(null);
+    }
   }
 
   return (
@@ -31,7 +43,9 @@ export default function DemoLogin() {
             onClick={() => signIn(demoRole)}
             type="button"
           >
-            {pendingRole === demoRole.role ? "Opening workspace..." : demoRole.label}
+            {pendingRole === demoRole.role
+              ? "Opening workspace..."
+              : demoRole.label}
           </button>
         ))}
       </div>

@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Header() {
   const routes = [
@@ -12,8 +12,13 @@ export default function Header() {
   return (
     <header className="w-full border-b bg-background">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-5 px-5">
-        <Link className="font-heading text-lg font-bold" href="/">SprintFlow</Link>
-        <nav aria-label="Main navigation" className="hidden gap-6 text-sm text-muted-foreground sm:flex">
+        <Link className="font-heading text-lg font-bold" href="/">
+          SprintFlow
+        </Link>
+        <nav
+          aria-label="Main navigation"
+          className="hidden gap-6 text-sm text-muted-foreground sm:flex"
+        >
           {routes.map((route) => (
             <Link key={route.url} href={route.url}>
               {route.name}
@@ -28,7 +33,12 @@ export default function Header() {
           >
             Login
           </Button>
-          <Button render={<Link href="/register">Get started</Link>} nativeButton={false}>Get started</Button>
+          <Button
+            render={<Link href="/register">Get started</Link>}
+            nativeButton={false}
+          >
+            Get started
+          </Button>
         </div>
       </div>
     </header>

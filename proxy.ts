@@ -1,9 +1,15 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 const roleByPath = {
   "/admin": "ADMIN",
   "/manager": "MANAGER",
   "/member": "MEMBER",
+} as const;
+
+const homeByRole = {
+  ADMIN: "/admin",
+  MANAGER: "/manager",
+  MEMBER: "/member",
 } as const;
 
 export function proxy(request: NextRequest) {
@@ -17,8 +23,8 @@ export function proxy(request: NextRequest) {
   const currentRole = request.cookies.get("sprintflow-role")?.value;
   if (currentRole === requiredRole) return NextResponse.next();
 
-  const destination = currentRole && currentRole in roleByPath
-    ? `/${currentRole.toLowerCase()}`
+  const destination = currentRole && currentRole in homeByRole
+    ? homeByRole[currentRole as keyof typeof homeByRole]
     : "/login";
   return NextResponse.redirect(new URL(destination, request.url));
 }
