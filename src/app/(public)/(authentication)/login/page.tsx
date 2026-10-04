@@ -1,6 +1,7 @@
 import Image from "next/image";
 import LoginForm from "@/components/form/login-form";
 import Link from "next/link";
+import DemoLogin from "@/components/form/demo-login";
 
 export default function LoginPage() {
   return (
@@ -15,6 +16,7 @@ export default function LoginPage() {
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
             <LoginForm />
+            <DemoLogin />
           </div>
         </div>
       </div>
