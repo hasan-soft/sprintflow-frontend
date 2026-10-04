@@ -1,7 +1,9 @@
 export default function AboutUsPage() {
   return (
-    <div>
-      <h1>About us page</h1>
-    </div>
+    <main className="mx-auto max-w-5xl px-5 py-20">
+      <p className="text-sm font-semibold uppercase tracking-wider text-primary">About SprintFlow</p>
+      <h1 className="mt-4 max-w-3xl font-heading text-4xl font-semibold sm:text-5xl">Good work deserves a clear path forward.</h1>
+      <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">SprintFlow brings project planning, team capacity, and everyday delivery into one focused workspace. It is built for teams that want momentum without more process.</p>
+    </main>
   );
 }
