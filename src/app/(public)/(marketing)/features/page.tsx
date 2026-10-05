@@ -1,4 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Features",
+  description:
+    "Explore SprintFlow's toolkit for sprint planning, project health analytics, and team delivery tracking.",
+  openGraph: {
+    title: "Features | SprintFlow",
+    description:
+      "Explore SprintFlow's toolkit for sprint planning, project health analytics, and team delivery tracking.",
+    url: "/features",
+  },
+};
 
 const features = [
   {

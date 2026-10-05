@@ -30,9 +30,29 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SprintFlow | Project work, in rhythm",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://sprintflow.vercel.app",
+  ),
+  title: {
+    default: "SprintFlow | Project work, in rhythm",
+    template: "%s | SprintFlow",
+  },
   description:
     "Plan projects, run focused sprints, and keep team delivery moving.",
+  openGraph: {
+    title: "SprintFlow | Project work, in rhythm",
+    description:
+      "Plan projects, run focused sprints, and keep team delivery moving.",
+    siteName: "SprintFlow",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SprintFlow | Project work, in rhythm",
+    description:
+      "Plan projects, run focused sprints, and keep team delivery moving.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

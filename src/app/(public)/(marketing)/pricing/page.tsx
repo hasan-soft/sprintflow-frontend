@@ -1,4 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Pricing",
+  description:
+    "Straightforward pricing for teams that ship. Start small, bring your whole team, and scale as your delivery grows.",
+  openGraph: {
+    title: "Pricing | SprintFlow",
+    description:
+      "Straightforward pricing for teams that ship. Start small, bring your whole team, and scale as your delivery grows.",
+    url: "/pricing",
+  },
+};
 
 export default function PricingPage() {
   return (

@@ -1,4 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Verify Account",
+  description:
+    "Check your inbox to verify your email address and activate your SprintFlow workspace.",
+  openGraph: {
+    title: "Verify Account | SprintFlow",
+    description:
+      "Check your inbox to verify your email address and activate your SprintFlow workspace.",
+    url: "/account-verify",
+  },
+};
 
 export default function AccountVerifyPage() {
   return (

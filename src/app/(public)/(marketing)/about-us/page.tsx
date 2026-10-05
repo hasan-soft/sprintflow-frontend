@@ -1,3 +1,17 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Learn about SprintFlow and our mission to bring project planning, team capacity, and everyday delivery into one focused workspace.",
+  openGraph: {
+    title: "About Us | SprintFlow",
+    description:
+      "Learn about SprintFlow and our mission to bring project planning, team capacity, and everyday delivery into one focused workspace.",
+    url: "/about-us",
+  },
+};
+
 export default function AboutUsPage() {
   return (
     <main className="mx-auto max-w-5xl px-5 py-20">

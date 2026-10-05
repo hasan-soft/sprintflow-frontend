@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import PaymentConfirmation from "@/components/modules/admin/PaymentConfirmation";
+
+export const metadata: Metadata = {
+  title: "Payment Successful",
+  description: "Your SprintFlow workspace subscription payment was successful.",
+};
 
 export default function PaymentSuccessPage() {
   return (

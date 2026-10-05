@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Payment Canceled",
+  description:
+    "Checkout canceled. Your current SprintFlow workspace plan is unchanged.",
+};
 
 export default function PaymentCancelPage() {
   return (

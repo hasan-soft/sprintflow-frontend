@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 const topics = [
   {
     question: "How do I invite a teammate?",
@@ -15,6 +17,18 @@ const topics = [
       "Open My work or Task board in the member workspace to review and update assigned work.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Help Center",
+  description:
+    "Quick answers and practical guides for SprintFlow workspace management, sprints, and task tracking.",
+  openGraph: {
+    title: "Help Center | SprintFlow",
+    description:
+      "Quick answers and practical guides for SprintFlow workspace management, sprints, and task tracking.",
+    url: "/help",
+  },
+};
 
 export default function HelpPage() {
   return (

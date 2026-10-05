@@ -1,3 +1,16 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "SprintFlow privacy policy and demo workspace data guidelines.",
+  openGraph: {
+    title: "Privacy Policy | SprintFlow",
+    description:
+      "SprintFlow privacy policy and demo workspace data guidelines.",
+    url: "/privacy",
+  },
+};
+
 export default function PrivacyPage() {
   return (
     <main className="mx-auto max-w-3xl px-5 py-16">

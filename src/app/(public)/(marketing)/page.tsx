@@ -1,4 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "SprintFlow | Project work, in rhythm",
+  description:
+    "A calmer place to plan work, see what is moving, and give every team a clear next step.",
+  openGraph: {
+    title: "SprintFlow | Project work, in rhythm",
+    description:
+      "A calmer place to plan work, see what is moving, and give every team a clear next step.",
+    url: "/",
+  },
+};
 
 export default function HomePage() {
   return (

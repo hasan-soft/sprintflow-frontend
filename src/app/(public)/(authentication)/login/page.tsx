@@ -1,9 +1,22 @@
 import { ArrowLeft, Zap } from "lucide-react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import DemoLogin from "@/components/form/demo-login";
 import GoogleLoginButton from "@/components/form/google-login";
 import LoginForm from "@/components/form/login-form";
+
+export const metadata: Metadata = {
+  title: "Log In",
+  description:
+    "Sign in to your SprintFlow workspace to keep your projects and sprints moving.",
+  openGraph: {
+    title: "Log In | SprintFlow",
+    description:
+      "Sign in to your SprintFlow workspace to keep your projects and sprints moving.",
+    url: "/login",
+  },
+};
 
 export default function LoginPage() {
   return (
