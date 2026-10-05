@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import {
   DndContext,
   type DragEndEvent,
@@ -8,17 +7,21 @@ import {
   useDroppable,
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { toast } from "sonner";
-import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/lib/apiClient";
+import { useEffect } from "react";
+import { useMyAssignedTasks, useUpdateTaskStatus } from "@/hooks";
 import {
   type TaskStatus,
   useTaskStore,
   type WorkspaceTask,
 } from "@/stores/task.store";
 
-const columns: TaskStatus[] = ["To do", "In progress", "Review", "Done"];
-
+const columns: TaskStatus[] = [
+  "To do",
+  "In progress",
+  "Review",
+  "Blocked",
+  "Done",
+];
 function readTasks(payload: unknown): WorkspaceTask[] | undefined {
   if (!payload || typeof payload !== "object") return undefined;
   const record = payload as Record<string, unknown>;
@@ -35,25 +38,36 @@ function readTasks(payload: unknown): WorkspaceTask[] | undefined {
     if (!row || typeof row !== "object") return [];
     const item = row as Record<string, unknown>;
     if (typeof item.title !== "string") return [];
-    const rawStatus = String(item.status ?? "TODO").toUpperCase().replaceAll("_", "");
-    const status: TaskStatus = rawStatus === "DONE" || rawStatus === "COMPLETED"
-      ? "Done"
-      : rawStatus === "REVIEW" || rawStatus === "INREVIEW"
-        ? "Review"
-        : rawStatus === "INPROGRESS" || rawStatus === "ACTIVE"
-          ? "In progress"
-          : "To do";
-    const project = item.project && typeof item.project === "object"
-      ? String((item.project as Record<string, unknown>).name ?? "Project")
-      : typeof item.project === "string" ? item.project : "SprintFlow project";
+    const rawStatus = String(item.status ?? "TODO")
+      .toUpperCase()
+      .replaceAll("_", "");
+    const status: TaskStatus =
+      rawStatus === "DONE" || rawStatus === "COMPLETED"
+        ? "Done"
+        : rawStatus === "BLOCKED"
+          ? "Blocked"
+          : rawStatus === "REVIEW" || rawStatus === "INREVIEW"
+            ? "Review"
+            : rawStatus === "INPROGRESS" || rawStatus === "ACTIVE"
+              ? "In progress"
+              : "To do";
+    const project =
+      item.project && typeof item.project === "object"
+        ? String((item.project as Record<string, unknown>).name ?? "Project")
+        : typeof item.project === "string"
+          ? item.project
+          : "SprintFlow project";
     const priority = String(item.priority ?? "NORMAL").toUpperCase();
-    return [{
-      id: String(item.id ?? `task-${index}`),
-      title: item.title,
-      project,
-      priority: priority === "HIGH" || priority === "URGENT" ? "High" : "Normal",
-      status,
-    }];
+    return [
+      {
+        id: String(item.id ?? `task-${index}`),
+        title: item.title,
+        project,
+        priority:
+          priority === "HIGH" || priority === "URGENT" ? "High" : "Normal",
+        status,
+      },
+    ];
   });
 }
 
@@ -119,14 +133,9 @@ function TaskColumn({
 
 export default function TaskBoard() {
   const tasks = useTaskStore((state) => state.tasks);
-  const moveTaskInStore = useTaskStore((state) => state.moveTask);
   const replaceTasks = useTaskStore((state) => state.replaceTasks);
-  const tasksQuery = useQuery({
-    queryKey: ["member-tasks"],
-    queryFn: () => apiClient<unknown>("/tasks"),
-    retry: false,
-    staleTime: 30_000,
-  });
+  const tasksQuery = useMyAssignedTasks();
+  const statusMutation = useUpdateTaskStatus();
 
   useEffect(() => {
     const fetchedTasks = readTasks(tasksQuery.data);
@@ -137,22 +146,46 @@ export default function TaskBoard() {
     const taskId = String(event.active.id);
     const destination = event.over?.id;
     if (!destination || !columns.includes(destination as TaskStatus)) return;
-    const task = moveTaskInStore(taskId, destination as TaskStatus);
-    if (task) toast.success(`${taskId} moved to ${destination}`);
+    const task = tasks.find((item) => item.id === taskId);
+    if (!task || task.status === destination) return;
+    statusMutation.mutate({ id: taskId, status: destination as TaskStatus });
   }
   return (
     <DndContext onDragEnd={moveTask}>
       <div className="space-y-3">
-        {tasksQuery.isError && <p className="border border-amber-600/30 bg-amber-600/5 px-4 py-3 text-sm text-amber-800" role="status">The live task list is unavailable. Showing sample assignments.</p>}
-        <div className="grid gap-4 lg:grid-cols-4">
-        {columns.map((status) => (
-          <TaskColumn
-            key={status}
-            status={status}
-            tasks={tasks.filter((task) => task.status === status)}
-          />
-        ))}
-        </div>
+        {tasksQuery.isError && (
+          <output className="block border border-rose-700/30 bg-rose-700/5 px-4 py-3 text-sm text-rose-800">
+            Your assigned tasks could not be loaded. Retry the request or sign
+            in again.
+          </output>
+        )}
+        {tasksQuery.isPending ? (
+          <output
+            aria-label="Loading assigned tasks"
+            className="grid animate-pulse gap-4 lg:grid-cols-3"
+          >
+            <span className="h-80 bg-muted" />
+            <span className="h-80 bg-muted" />
+            <span className="h-80 bg-muted" />
+          </output>
+        ) : tasksQuery.isSuccess && tasks.length === 0 ? (
+          <div className="border border-dashed px-6 py-16 text-center">
+            <h2 className="font-semibold">You are all caught up.</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              No tasks are currently assigned to your account.
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-4 lg:grid-cols-5">
+            {columns.map((status) => (
+              <TaskColumn
+                key={status}
+                status={status}
+                tasks={tasks.filter((task) => task.status === status)}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </DndContext>
   );

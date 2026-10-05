@@ -1,6 +1,27 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import CheckoutButton from "@/components/modules/admin/CheckoutButton";
+import { useProjects } from "@/hooks";
 
 export default function AdminBillingPage() {
+  const projectsQuery = useProjects();
+  const [organizationId, setOrganizationId] = useState("");
+  const [plan, setPlan] = useState<"PRO" | "ENTERPRISE">("PRO");
+  const organizations = Array.from(
+    new Map(
+      (projectsQuery.data?.data ?? []).map((project) => [
+        project.organizationId,
+        project.organization?.name ?? project.organizationId,
+      ]),
+    ).entries(),
+  );
+
+  useEffect(() => {
+    if (!organizationId && organizations[0])
+      setOrganizationId(organizations[0][0]);
+  }, [organizationId, organizations]);
+
   return (
     <div className="mx-auto max-w-5xl space-y-7">
       <header>
@@ -38,19 +59,59 @@ export default function AdminBillingPage() {
         </div>
         <div className="flex flex-col items-start justify-between gap-5 border bg-card p-6">
           <div>
-            <p className="text-sm font-semibold">Team plan</p>
+            <label className="text-xs font-medium text-muted-foreground">
+              Billing organization
+              <select
+                className="mt-2 h-10 w-full border bg-background px-3 text-sm text-foreground"
+                onChange={(event) => setOrganizationId(event.target.value)}
+                value={organizationId}
+              >
+                <option value="">Select an organization</option>
+                {organizations.map(([id, name]) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p className="mt-5 text-sm font-semibold">
+              {plan === "PRO" ? "Pro plan" : "Enterprise plan"}
+            </p>
             <p className="mt-3 font-heading text-3xl font-semibold">
-              $49
+              {plan === "PRO" ? "$29" : "$99"}
               <span className="font-sans text-sm font-normal text-muted-foreground">
                 {" "}
                 / month
               </span>
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
-              Unlimited projects and team analytics.
+              {plan === "PRO"
+                ? "Project planning and delivery analytics."
+                : "Advanced capacity and workspace analytics."}
             </p>
           </div>
-          <CheckoutButton />
+          <div className="flex flex-wrap items-center gap-3">
+            <label className="sr-only" htmlFor="billing-plan">
+              Plan
+            </label>
+            <select
+              id="billing-plan"
+              className="h-10 border bg-background px-3 text-sm"
+              onChange={(event) =>
+                setPlan(event.target.value as "PRO" | "ENTERPRISE")
+              }
+              value={plan}
+            >
+              <option value="PRO">Pro · $29/mo</option>
+              <option value="ENTERPRISE">Enterprise · $99/mo</option>
+            </select>
+            <CheckoutButton organizationId={organizationId} plan={plan} />
+          </div>
+          {projectsQuery.isError && (
+            <p className="text-sm text-destructive">
+              Could not load organizations from the API.
+            </p>
+          )}
         </div>
       </section>
       <section className="border bg-card p-6">

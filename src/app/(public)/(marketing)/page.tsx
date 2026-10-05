@@ -4,7 +4,7 @@ export default function HomePage() {
   return (
     <main>
       <section className="border-b bg-[linear-gradient(115deg,oklch(0.97_0.025_190)_0%,var(--background)_52%,oklch(0.96_0.035_80)_100%)]">
-        <div className="mx-auto grid min-h-[540px] max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
+        <div className="mx-auto grid min-h-135 max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
           <div className="max-w-xl">
             <p className="text-sm font-semibold uppercase tracking-[0.12em] text-primary">
               Projects, in rhythm

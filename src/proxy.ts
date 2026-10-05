@@ -21,11 +21,13 @@ export function proxy(request: NextRequest) {
   if (!requiredRole) return NextResponse.next();
 
   const currentRole = request.cookies.get("sprintflow-role")?.value;
-  if (currentRole === requiredRole) return NextResponse.next();
+  const accessToken = request.cookies.get("sprintflow-access-token")?.value;
+  if (currentRole === requiredRole && accessToken) return NextResponse.next();
 
-  const destination = currentRole && currentRole in homeByRole
-    ? homeByRole[currentRole as keyof typeof homeByRole]
-    : "/login";
+  const destination =
+    currentRole && currentRole in homeByRole
+      ? homeByRole[currentRole as keyof typeof homeByRole]
+      : "/login";
   return NextResponse.redirect(new URL(destination, request.url));
 }
 

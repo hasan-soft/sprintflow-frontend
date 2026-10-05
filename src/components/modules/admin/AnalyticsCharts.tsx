@@ -4,51 +4,50 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 
-const velocity = [
-  { sprint: "S-18", points: 42, completed: 37 },
-  { sprint: "S-19", points: 48, completed: 44 },
-  { sprint: "S-20", points: 45, completed: 39 },
-  { sprint: "S-21", points: 52, completed: 49 },
-  { sprint: "S-22", points: 50, completed: 46 },
-  { sprint: "S-23", points: 58, completed: 54 },
-];
+export default function AnalyticsCharts({
+  overview,
+}: {
+  overview: Record<string, number>;
+}) {
+  const delivery = [
+    { category: "Projects", count: overview.projects ?? 0 },
+    { category: "Sprints", count: overview.sprints ?? 0 },
+    { category: "Tasks", count: overview.tasks ?? 0 },
+    { category: "Subtasks", count: overview.subtasks ?? 0 },
+  ];
+  const workspace = [
+    { category: "Users", count: overview.users ?? 0 },
+    { category: "Comments", count: overview.comments ?? 0 },
+    { category: "Activity", count: overview.activityLogs ?? 0 },
+    { category: "Plans", count: overview.subscriptions ?? 0 },
+  ];
 
-const capacity = [
-  { team: "Platform", planned: 82, used: 69 },
-  { team: "Product", planned: 74, used: 71 },
-  { team: "Mobile", planned: 66, used: 52 },
-  { team: "Design", planned: 57, used: 48 },
-];
-
-export default function AnalyticsCharts() {
   return (
     <div className="grid gap-5 xl:grid-cols-2">
       <section className="border bg-card p-5">
         <div className="mb-5 flex items-start justify-between gap-3">
           <div>
-            <h2 className="font-semibold">Sprint velocity</h2>
+            <h2 className="font-semibold">Delivery inventory</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Committed vs. completed story points
+              Current project and work-item totals
             </p>
           </div>
-          <span className="text-xs text-muted-foreground">Last 6 sprints</span>
+          <span className="text-xs text-muted-foreground">Live totals</span>
         </div>
         <div
           className="h-64"
           role="img"
-          aria-label="Line chart comparing committed and completed points across six sprints"
+          aria-label="Bar chart of project, sprint, task, and subtask totals"
         >
           <ResponsiveContainer height="100%" width="100%">
-            <LineChart
-              data={velocity}
+            <BarChart
+              data={delivery}
               margin={{ left: -20, right: 10, top: 10 }}
             >
               <CartesianGrid
@@ -58,7 +57,7 @@ export default function AnalyticsCharts() {
               />
               <XAxis
                 axisLine={false}
-                dataKey="sprint"
+                dataKey="category"
                 tickLine={false}
                 tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
               />
@@ -68,43 +67,31 @@ export default function AnalyticsCharts() {
                 tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
               />
               <Tooltip />
-              <Line
-                dataKey="points"
-                name="Committed"
-                stroke="var(--color-chart-3)"
-                strokeWidth={2}
-                dot={false}
+              <Bar
+                dataKey="count"
+                name="Records"
+                fill="var(--color-primary)"
+                radius={[3, 3, 0, 0]}
               />
-              <Line
-                dataKey="completed"
-                name="Completed"
-                stroke="var(--color-primary)"
-                strokeWidth={2}
-                dot={false}
-              />
-            </LineChart>
+            </BarChart>
           </ResponsiveContainer>
-        </div>
-        <div className="mt-3 flex gap-5 text-xs text-muted-foreground">
-          <span>Committed</span>
-          <span>Completed</span>
         </div>
       </section>
       <section className="border bg-card p-5">
         <div className="mb-5">
-          <h2 className="font-semibold">Team capacity</h2>
+          <h2 className="font-semibold">Workspace activity</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Planned capacity against hours used
+            Current membership and collaboration totals
           </p>
         </div>
         <div
           className="h-64"
           role="img"
-          aria-label="Bar chart comparing planned capacity and used hours by team"
+          aria-label="Bar chart of users, comments, activities, and subscriptions"
         >
           <ResponsiveContainer height="100%" width="100%">
             <BarChart
-              data={capacity}
+              data={workspace}
               margin={{ left: -20, right: 10, top: 10 }}
             >
               <CartesianGrid
@@ -114,7 +101,7 @@ export default function AnalyticsCharts() {
               />
               <XAxis
                 axisLine={false}
-                dataKey="team"
+                dataKey="category"
                 tickLine={false}
                 tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
               />
@@ -125,15 +112,9 @@ export default function AnalyticsCharts() {
               />
               <Tooltip />
               <Bar
-                dataKey="planned"
-                name="Planned"
+                dataKey="count"
+                name="Records"
                 fill="var(--color-chart-3)"
-                radius={[3, 3, 0, 0]}
-              />
-              <Bar
-                dataKey="used"
-                name="Used"
-                fill="var(--color-primary)"
                 radius={[3, 3, 0, 0]}
               />
             </BarChart>

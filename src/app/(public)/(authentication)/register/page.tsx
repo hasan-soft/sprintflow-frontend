@@ -1,11 +1,12 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { toast } from "sonner";
+import { z } from "zod";
+import { useRegistration } from "@/hooks";
 
 const registerSchema = z
   .object({
@@ -23,6 +24,7 @@ type RegisterValues = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const router = useRouter();
+  const registration = useRegistration();
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
@@ -30,17 +32,19 @@ export default function RegisterPage() {
 
   async function register(values: RegisterValues) {
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: values.name, email: values.email, password: values.password }),
+      const result = await registration.mutateAsync({
+        name: values.name,
+        email: values.email,
+        password: values.password,
       });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error ?? "Unable to create the account.");
       toast.success(result.message ?? `Account created for ${values.email}`);
       router.push("/account-verify");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Unable to create the account.");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unable to create the account.",
+      );
     }
   }
 
@@ -131,10 +135,12 @@ export default function RegisterPage() {
         </div>
         <button
           className="h-11 w-full bg-primary text-sm font-medium text-primary-foreground"
-          disabled={form.formState.isSubmitting}
+          disabled={form.formState.isSubmitting || registration.isPending}
           type="submit"
         >
-          {form.formState.isSubmitting ? "Creating account..." : "Create account"}
+          {form.formState.isSubmitting || registration.isPending
+            ? "Creating account..."
+            : "Create account"}
         </button>
       </form>
       <p className="mt-5 text-center text-sm text-muted-foreground">

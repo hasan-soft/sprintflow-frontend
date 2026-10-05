@@ -5,14 +5,18 @@ type Role = (typeof supportedRoles)[number];
 type RecordValue = Record<string, unknown>;
 
 function asRecord(value: unknown): RecordValue | undefined {
-  return value && typeof value === "object" ? value as RecordValue : undefined;
+  return value && typeof value === "object"
+    ? (value as RecordValue)
+    : undefined;
 }
 
 function readRoleFromToken(token: string): string | undefined {
   try {
     const payload = token.split(".")[1];
     if (!payload) return undefined;
-    const decoded = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as RecordValue;
+    const decoded = JSON.parse(
+      Buffer.from(payload, "base64url").toString("utf8"),
+    ) as RecordValue;
     const user = asRecord(decoded.user);
     const role = decoded.role ?? user?.role;
     return typeof role === "string" ? role.toUpperCase() : undefined;
@@ -26,13 +30,27 @@ export async function saveAuthSession(payload: unknown, roleOverride?: Role) {
   const data = asRecord(root?.data) ?? root;
   const result = asRecord(data?.result) ?? data;
   const tokens = asRecord(result?.tokens) ?? asRecord(root?.tokens) ?? result;
-  const accessToken = tokens?.accessToken ?? tokens?.access_token ?? result?.accessToken ?? result?.access_token;
-  const refreshToken = tokens?.refreshToken ?? tokens?.refresh_token ?? result?.refreshToken ?? result?.refresh_token;
-  const user = asRecord(result?.user) ?? asRecord(data?.user) ?? asRecord(root?.user);
+  const accessToken =
+    tokens?.accessToken ??
+    tokens?.access_token ??
+    result?.accessToken ??
+    result?.access_token;
+  const refreshToken =
+    tokens?.refreshToken ??
+    tokens?.refresh_token ??
+    result?.refreshToken ??
+    result?.refresh_token;
+  const user =
+    asRecord(result?.user) ?? asRecord(data?.user) ?? asRecord(root?.user);
 
-  if (typeof accessToken !== "string" || accessToken.length === 0) return undefined;
+  if (typeof accessToken !== "string" || accessToken.length === 0)
+    return undefined;
 
-  const candidateRole = roleOverride ?? String(user?.role ?? result?.role ?? readRoleFromToken(accessToken) ?? "").toUpperCase();
+  const candidateRole =
+    roleOverride ??
+    String(
+      user?.role ?? result?.role ?? readRoleFromToken(accessToken) ?? "",
+    ).toUpperCase();
   if (!supportedRoles.includes(candidateRole as Role)) return undefined;
 
   const secure = process.env.NODE_ENV === "production";

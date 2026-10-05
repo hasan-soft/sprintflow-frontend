@@ -2,11 +2,11 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import apiClient from "@/lib/apiClient";
+import { useUpdateUserRole, useUsers } from "@/hooks";
+import type { UserRole } from "@/types";
 
-type Role = "ADMIN" | "MANAGER" | "MEMBER";
+type Role = UserRole;
 type User = {
   id: number | string;
   name: string;
@@ -14,58 +14,6 @@ type User = {
   role: Role;
   status: "Active" | "Invited";
 };
-
-const initialUsers: User[] = [
-  {
-    id: 1,
-    name: "Alex Morgan",
-    email: "alex@sprintflow.dev",
-    role: "ADMIN",
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "Sam Rivera",
-    email: "sam@sprintflow.dev",
-    role: "MANAGER",
-    status: "Active",
-  },
-  {
-    id: 3,
-    name: "Jordan Lee",
-    email: "jordan@sprintflow.dev",
-    role: "MEMBER",
-    status: "Active",
-  },
-  {
-    id: 4,
-    name: "Taylor Kim",
-    email: "taylor@sprintflow.dev",
-    role: "MEMBER",
-    status: "Invited",
-  },
-  {
-    id: 5,
-    name: "Casey Park",
-    email: "casey@sprintflow.dev",
-    role: "MANAGER",
-    status: "Active",
-  },
-  {
-    id: 6,
-    name: "Riley Chen",
-    email: "riley@sprintflow.dev",
-    role: "MEMBER",
-    status: "Active",
-  },
-  {
-    id: 7,
-    name: "Avery Brooks",
-    email: "avery@sprintflow.dev",
-    role: "MEMBER",
-    status: "Invited",
-  },
-];
 
 const pageSize = 5;
 
@@ -88,15 +36,22 @@ function readUsers(payload: unknown): User[] | undefined {
     const item = row as Record<string, unknown>;
     if (typeof item.email !== "string") return [];
     const rawRole = String(item.role ?? "MEMBER").toUpperCase();
-    const role: Role = rawRole === "ADMIN" || rawRole === "MANAGER" ? rawRole : "MEMBER";
+    const role: Role =
+      rawRole === "ADMIN" || rawRole === "MANAGER" ? rawRole : "MEMBER";
     const status = String(item.status ?? "ACTIVE").toUpperCase();
-    return [{
-      id: typeof item.id === "string" || typeof item.id === "number" ? item.id : `user-${index}`,
-      name: typeof item.name === "string" ? item.name : item.email,
-      email: item.email,
-      role,
-      status: status === "INVITED" || status === "PENDING" ? "Invited" : "Active",
-    }];
+    return [
+      {
+        id:
+          typeof item.id === "string" || typeof item.id === "number"
+            ? item.id
+            : `user-${index}`,
+        name: typeof item.name === "string" ? item.name : item.email,
+        email: item.email,
+        role,
+        status:
+          status === "INVITED" || status === "PENDING" ? "Invited" : "Active",
+      },
+    ];
   });
 }
 
@@ -104,28 +59,23 @@ export default function UserDirectory() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [users, setUsers] = useState(initialUsers);
-  const usersQuery = useQuery({
-    queryKey: ["admin-users"],
-    queryFn: () => apiClient<unknown>("/users"),
-    retry: false,
-    staleTime: 30_000,
-  });
-  const [creating, setCreating] = useState(false);
-  const [draft, setDraft] = useState({
-    name: "",
-    email: "",
-    role: "MEMBER" as Role,
-  });
-  const [editingId, setEditingId] = useState<number | string | null>(null);
-  const [editDraft, setEditDraft] = useState({
-    name: "",
-    email: "",
-    role: "MEMBER" as Role,
-  });
   const query = searchParams.get("q") ?? "";
-  const selectedRole = searchParams.get("role") ?? "all";
+  const roleParam = searchParams.get("role") ?? "all";
+  const selectedRole =
+    roleParam === "ADMIN" || roleParam === "MANAGER" || roleParam === "MEMBER"
+      ? roleParam
+      : "all";
   const currentPage = Math.max(1, Number(searchParams.get("page") ?? "1") || 1);
+  const usersQuery = useUsers({
+    searchTerm: query,
+    role: selectedRole === "all" ? undefined : selectedRole,
+    page: String(currentPage),
+    limit: String(pageSize),
+  });
+  const updateRole = useUpdateUserRole();
+  const [users, setUsers] = useState<User[]>([]);
+  const [editingId, setEditingId] = useState<number | string | null>(null);
+  const [editRole, setEditRole] = useState<Role>("MEMBER");
 
   useEffect(() => {
     const fetchedUsers = readUsers(usersQuery.data);
@@ -141,50 +91,32 @@ export default function UserDirectory() {
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch = `${user.name} ${user.email}`
-      .toLowerCase()
-      .includes(query.toLowerCase());
-    return (
-      matchesSearch && (selectedRole === "all" || user.role === selectedRole)
-    );
-  });
-  const pageCount = Math.max(1, Math.ceil(filteredUsers.length / pageSize));
-  const visibleUsers = filteredUsers.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize,
-  );
-
-  function createUser(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setUsers((existing) => [
-      { ...draft, id: Date.now(), status: "Invited" },
-      ...existing,
-    ]);
-    setDraft({ name: "", email: "", role: "MEMBER" });
-    setCreating(false);
-    updateParams({ page: "1" });
-    toast.success("Invitation added to the workspace");
-  }
+  const visibleUsers = users;
+  const totalUsers = usersQuery.data?.meta?.total ?? 0;
+  const pageCount = Math.max(1, usersQuery.data?.meta?.totalPages ?? 1);
 
   function beginEdit(user: User) {
     setEditingId(user.id);
-    setEditDraft({ name: user.name, email: user.email, role: user.role });
+    setEditRole(user.role);
   }
 
-  function saveEdit(userId: number | string) {
-    setUsers((existing) =>
-      existing.map((user) =>
-        user.id === userId ? { ...user, ...editDraft } : user,
-      ),
-    );
-    setEditingId(null);
-    toast.success("User details updated");
-  }
-
-  function removeUser(userId: number | string) {
-    setUsers((existing) => existing.filter((user) => user.id !== userId));
-    toast.success("User removed from the workspace");
+  async function saveRole(userId: number | string) {
+    try {
+      await updateRole.mutateAsync({ id: String(userId), role: editRole });
+      setUsers((existing) =>
+        existing.map((user) =>
+          user.id === userId ? { ...user, role: editRole } : user,
+        ),
+      );
+      setEditingId(null);
+      toast.success("Workspace role updated");
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Could not update the user's role.",
+      );
+    }
   }
 
   return (
@@ -193,69 +125,23 @@ export default function UserDirectory() {
         <div>
           <h2 className="font-semibold">Workspace members</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            {filteredUsers.length} people match these filters
+            {totalUsers} people match these filters
           </p>
         </div>
-        <button
-          className="bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
-          onClick={() => setCreating((open) => !open)}
-          type="button"
-        >
-          {creating ? "Close form" : "Invite member"}
-        </button>
       </div>
 
       {usersQuery.isError && (
-        <p className="border border-amber-600/30 bg-amber-600/5 px-4 py-3 text-sm text-amber-800" role="status">
-          The live user list is unavailable. Showing sample workspace records.
-        </p>
+        <output className="block border border-rose-700/30 bg-rose-700/5 px-4 py-3 text-sm text-rose-800">
+          The live user list could not be loaded. Sign in again or retry the
+          request.
+        </output>
       )}
 
-      {creating && (
-        <form
-          className="grid gap-3 border bg-card p-4 sm:grid-cols-[1fr_1fr_150px_auto]"
-          onSubmit={createUser}
-        >
-          <input
-            aria-label="Name"
-            className="h-10 border bg-background px-3 text-sm"
-            onChange={(event) =>
-              setDraft({ ...draft, name: event.target.value })
-            }
-            placeholder="Full name"
-            required
-            value={draft.name}
-          />
-          <input
-            aria-label="Email"
-            className="h-10 border bg-background px-3 text-sm"
-            onChange={(event) =>
-              setDraft({ ...draft, email: event.target.value })
-            }
-            placeholder="Email address"
-            required
-            type="email"
-            value={draft.email}
-          />
-          <select
-            aria-label="Role"
-            className="h-10 border bg-background px-3 text-sm"
-            onChange={(event) =>
-              setDraft({ ...draft, role: event.target.value as Role })
-            }
-            value={draft.role}
-          >
-            <option value="MEMBER">Member</option>
-            <option value="MANAGER">Manager</option>
-            <option value="ADMIN">Admin</option>
-          </select>
-          <button
-            className="h-10 bg-primary px-4 text-sm font-medium text-primary-foreground"
-            type="submit"
-          >
-            Send invite
-          </button>
-        </form>
+      {usersQuery.isPending && (
+        <output
+          aria-label="Loading members"
+          className="block h-72 animate-pulse bg-muted"
+        />
       )}
 
       <div className="flex flex-wrap gap-3">
@@ -287,7 +173,7 @@ export default function UserDirectory() {
       </div>
 
       <div className="overflow-x-auto border bg-card">
-        <table className="w-full min-w-[760px] border-collapse text-left text-sm">
+        <table className="w-full min-w-190 border-collapse text-left text-sm">
           <thead className="border-b bg-muted/40 text-xs uppercase text-muted-foreground">
             <tr>
               <th className="px-4 py-3 font-medium">Name</th>
@@ -302,40 +188,19 @@ export default function UserDirectory() {
                 {editingId === user.id ? (
                   <>
                     <td className="px-4 py-3">
-                      <input
-                        aria-label="Edit name"
-                        className="h-9 w-48 border bg-background px-2"
-                        onChange={(event) =>
-                          setEditDraft({
-                            ...editDraft,
-                            name: event.target.value,
-                          })
-                        }
-                        value={editDraft.name}
-                      />
-                      <input
-                        aria-label="Edit email"
-                        className="mt-1 h-9 w-48 border bg-background px-2"
-                        onChange={(event) =>
-                          setEditDraft({
-                            ...editDraft,
-                            email: event.target.value,
-                          })
-                        }
-                        value={editDraft.email}
-                      />
+                      {user.name}
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {user.email}
+                      </p>
                     </td>
                     <td className="px-4 py-3">
                       <select
                         aria-label="Edit role"
                         className="h-9 border bg-background px-2"
                         onChange={(event) =>
-                          setEditDraft({
-                            ...editDraft,
-                            role: event.target.value as Role,
-                          })
+                          setEditRole(event.target.value as Role)
                         }
-                        value={editDraft.role}
+                        value={editRole}
                       >
                         <option value="ADMIN">Admin</option>
                         <option value="MANAGER">Manager</option>
@@ -346,7 +211,8 @@ export default function UserDirectory() {
                     <td className="space-x-3 px-4 py-3 text-right">
                       <button
                         className="font-medium text-primary"
-                        onClick={() => saveEdit(user.id)}
+                        disabled={updateRole.isPending}
+                        onClick={() => saveRole(user.id)}
                         type="button"
                       >
                         Save
@@ -383,14 +249,7 @@ export default function UserDirectory() {
                         onClick={() => beginEdit(user)}
                         type="button"
                       >
-                        Edit
-                      </button>
-                      <button
-                        className="font-medium text-destructive hover:underline"
-                        onClick={() => removeUser(user.id)}
-                        type="button"
-                      >
-                        Remove
+                        Edit role
                       </button>
                     </td>
                   </>
@@ -403,8 +262,7 @@ export default function UserDirectory() {
                   className="px-4 py-14 text-center text-muted-foreground"
                   colSpan={4}
                 >
-                  No members match this search. Try another filter or invite
-                  someone new.
+                  No members match this search. Try another filter.
                 </td>
               </tr>
             )}

@@ -1,14 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import AnalyticsCharts from "@/components/modules/admin/AnalyticsCharts";
-
-const metrics = [
-  { label: "Active projects", value: "24", change: "+3 this month" },
-  { label: "Workspace members", value: "186", change: "+12 this month" },
-  { label: "Tasks completed", value: "1,284", change: "92% on schedule" },
-  { label: "Monthly spend", value: "$18,420", change: "68% of budget" },
-];
+import { useAdminStats } from "@/hooks";
 
 export default function AdminOverviewPage() {
+  const statsQuery = useAdminStats();
+  const overview = statsQuery.data?.data.overview;
+  const metrics = [
+    { label: "Projects", value: overview?.projects },
+    { label: "Workspace members", value: overview?.users },
+    { label: "Tasks", value: overview?.tasks },
+    { label: "Subscriptions", value: overview?.subscriptions },
+  ];
+
   return (
     <div className="mx-auto max-w-7xl space-y-8">
       <header className="flex flex-wrap items-end justify-between gap-4">
@@ -17,10 +22,10 @@ export default function AdminOverviewPage() {
             Workspace overview
           </p>
           <h1 className="mt-1 font-heading text-3xl font-semibold">
-            Good morning, Alex
+            Workspace analytics
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Here is how your teams are moving this week.
+            Live totals across projects, delivery, and collaboration.
           </p>
         </div>
         <Link
@@ -34,19 +39,31 @@ export default function AdminOverviewPage() {
         aria-label="Workspace metrics"
         className="grid gap-px border bg-border sm:grid-cols-2 xl:grid-cols-4"
       >
-        {metrics.map((metric) => (
-          <div className="bg-card p-5" key={metric.label}>
-            <p className="text-sm text-muted-foreground">{metric.label}</p>
-            <p className="mt-3 font-heading text-3xl font-semibold">
-              {metric.value}
-            </p>
-            <p className="mt-2 text-xs text-muted-foreground">
-              {metric.change}
-            </p>
+        {statsQuery.isPending ? (
+          <div className="col-span-full grid animate-pulse grid-cols-2 gap-px bg-border xl:grid-cols-4">
+            {metrics.map((metric) => (
+              <div className="h-28 bg-card" key={metric.label} />
+            ))}
           </div>
-        ))}
+        ) : statsQuery.isError || !overview ? (
+          <div className="col-span-full bg-card p-6 text-sm text-rose-800">
+            Workspace analytics could not be loaded from the API.
+          </div>
+        ) : (
+          metrics.map((metric) => (
+            <div className="bg-card p-5" key={metric.label}>
+              <p className="text-sm text-muted-foreground">{metric.label}</p>
+              <p className="mt-3 font-heading text-3xl font-semibold">
+                {metric.value ?? 0}
+              </p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Current total
+              </p>
+            </div>
+          ))
+        )}
       </section>
-      <AnalyticsCharts />
+      {overview && <AnalyticsCharts overview={overview} />}
       <section className="border bg-card p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>

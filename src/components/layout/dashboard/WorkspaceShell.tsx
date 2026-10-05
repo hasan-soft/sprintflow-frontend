@@ -1,47 +1,17 @@
-import {
-  Activity,
-  BarChart3,
-  CircleHelp,
-  CreditCard,
-  LayoutDashboard,
-  ListTodo,
-  Settings2,
-  Users,
-  Workflow,
-} from "lucide-react";
+import { CircleHelp } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import SignOutButton from "@/components/layout/dashboard/SignOutButton";
-
-const navigation = {
-  ADMIN: [
-    { href: "/admin", label: "Overview", icon: LayoutDashboard },
-    { href: "/admin/users", label: "People", icon: Users },
-    { href: "/admin/billing", label: "Billing", icon: CreditCard },
-    { href: "/admin/logs", label: "Activity logs", icon: Activity },
-  ],
-  MANAGER: [
-    { href: "/manager", label: "Overview", icon: LayoutDashboard },
-    { href: "/manager/projects", label: "Projects", icon: Workflow },
-    { href: "/manager/sprints", label: "Sprints", icon: ListTodo },
-    { href: "/manager/budget", label: "Budget", icon: BarChart3 },
-  ],
-  MEMBER: [
-    { href: "/member", label: "My work", icon: ListTodo },
-    { href: "/member/tasks", label: "Task board", icon: Workflow },
-    { href: "/member/activity", label: "Activity", icon: Activity },
-    { href: "/member/profile", label: "Profile settings", icon: Settings2 },
-  ],
-} as const;
+import { workspaceRoutes } from "@/routes";
 
 export default function WorkspaceShell({
   workspaceRole,
   children,
 }: {
-  workspaceRole: keyof typeof navigation;
+  workspaceRole: keyof typeof workspaceRoutes;
   children: ReactNode;
 }) {
-  const links = navigation[workspaceRole];
+  const links = workspaceRoutes[workspaceRole];
 
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[236px_minmax(0,1fr)]">
