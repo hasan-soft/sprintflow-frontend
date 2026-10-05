@@ -1,5 +1,6 @@
-const backendApiBase = process.env.NEXT_PUBLIC_API_URL
-  ?? `${process.env.BACKEND_URL ?? "https://sprintflow-backend.vercel.app"}${process.env.BACKEND_API_PREFIX ?? "/api/v1"}`;
+const backendApiBase =
+  process.env.NEXT_PUBLIC_API_URL ??
+  `${process.env.BACKEND_URL ?? "https://sprintflow-backend.vercel.app"}${process.env.BACKEND_API_PREFIX ?? "/api/v1"}`;
 
 export function backendUrl(path: string) {
   return `${backendApiBase.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
@@ -19,8 +20,12 @@ export async function requestBackendAuth(path: string, body: unknown) {
 export function getBackendMessage(payload: unknown, fallback: string) {
   if (payload && typeof payload === "object") {
     const record = payload as Record<string, unknown>;
-    const data = record.data && typeof record.data === "object" ? record.data as Record<string, unknown> : undefined;
-    const message = record.message ?? record.error ?? data?.message ?? data?.error;
+    const data =
+      record.data && typeof record.data === "object"
+        ? (record.data as Record<string, unknown>)
+        : undefined;
+    const message =
+      record.message ?? record.error ?? data?.message ?? data?.error;
     if (typeof message === "string") return message;
   }
   return fallback;
