@@ -72,6 +72,11 @@ export default function LoginPage() {
                 </Link>
               </p>
             </div>
+
+            {/* Footer Notice */}
+            <p className="mt-4 text-center text-[11px] text-muted-foreground">
+              © 2026 SprintFlow · All rights reserved
+            </p>
           </div>
 
           {/* Right Column */}

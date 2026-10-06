@@ -1,7 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Loader2, Lock, Mail, User, UserPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -24,6 +26,9 @@ type RegisterValues = z.infer<typeof registerSchema>;
 export default function RegisterForm() {
   const router = useRouter();
   const registration = useRegistration();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
@@ -47,89 +52,167 @@ export default function RegisterForm() {
     }
   }
 
+  const isLoading = form.formState.isSubmitting || registration.isPending;
+
   return (
-    <form
-      className="mt-7 space-y-4 border bg-card p-6"
-      onSubmit={form.handleSubmit(register)}
-    >
-      <div>
-        <label className="text-sm font-medium" htmlFor="register-name">
+    <form className="space-y-3.5" onSubmit={form.handleSubmit(register)}>
+      {/* Full Name */}
+      <div className="space-y-1">
+        <label
+          className="text-xs font-semibold tracking-wide text-foreground"
+          htmlFor="register-name"
+        >
           Full name
         </label>
-        <input
-          autoComplete="name"
-          className="mt-2 h-11 w-full border bg-background px-3 text-sm"
-          id="register-name"
-          {...form.register("name")}
-        />
+        <div className="relative">
+          <User
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+          />
+          <input
+            autoComplete="name"
+            className="h-10.5 w-full rounded-md border border-input bg-background pl-9.5 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+            id="register-name"
+            placeholder="name here"
+            type="text"
+            {...form.register("name")}
+          />
+        </div>
         {form.formState.errors.name && (
-          <p className="mt-1 text-xs text-destructive">
+          <p className="text-xs text-destructive">
             {form.formState.errors.name.message}
           </p>
         )}
       </div>
-      <div>
-        <label className="text-sm font-medium" htmlFor="register-email">
+
+      {/* Email Address */}
+      <div className="space-y-1">
+        <label
+          className="text-xs font-semibold tracking-wide text-foreground"
+          htmlFor="register-email"
+        >
           Email address
         </label>
-        <input
-          autoComplete="email"
-          className="mt-2 h-11 w-full border bg-background px-3 text-sm"
-          id="register-email"
-          type="email"
-          {...form.register("email")}
-        />
+        <div className="relative">
+          <Mail
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+          />
+          <input
+            autoComplete="email"
+            className="h-10.5 w-full rounded-md border border-input bg-background pl-9.5 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+            id="register-email"
+            placeholder="email here"
+            type="email"
+            {...form.register("email")}
+          />
+        </div>
         {form.formState.errors.email && (
-          <p className="mt-1 text-xs text-destructive">
+          <p className="text-xs text-destructive">
             {form.formState.errors.email.message}
           </p>
         )}
       </div>
-      <div>
-        <label className="text-sm font-medium" htmlFor="register-password">
+
+      {/* Password */}
+      <div className="space-y-1">
+        <label
+          className="text-xs font-semibold tracking-wide text-foreground"
+          htmlFor="register-password"
+        >
           Password
         </label>
-        <input
-          autoComplete="new-password"
-          className="mt-2 h-11 w-full border bg-background px-3 text-sm"
-          id="register-password"
-          type="password"
-          {...form.register("password")}
-        />
+        <div className="relative">
+          <Lock
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+          />
+          <input
+            autoComplete="new-password"
+            className="h-10.5 w-full rounded-md border border-input bg-background pl-9.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+            id="register-password"
+            placeholder="at least 8 characters"
+            type={showPassword ? "text" : "password"}
+            {...form.register("password")}
+          />
+          <button
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition p-1"
+            onClick={() => setShowPassword(!showPassword)}
+            type="button"
+          >
+            {showPassword ? (
+              <EyeOff aria-hidden="true" size={16} />
+            ) : (
+              <Eye aria-hidden="true" size={16} />
+            )}
+          </button>
+        </div>
         {form.formState.errors.password && (
-          <p className="mt-1 text-xs text-destructive">
+          <p className="text-xs text-destructive">
             {form.formState.errors.password.message}
           </p>
         )}
       </div>
-      <div>
+
+      {/* Confirm Password */}
+      <div className="space-y-1">
         <label
-          className="text-sm font-medium"
+          className="text-xs font-semibold tracking-wide text-foreground"
           htmlFor="register-confirm-password"
         >
           Confirm password
         </label>
-        <input
-          autoComplete="new-password"
-          className="mt-2 h-11 w-full border bg-background px-3 text-sm"
-          id="register-confirm-password"
-          type="password"
-          {...form.register("confirmPassword")}
-        />
+        <div className="relative">
+          <Lock
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+          />
+          <input
+            autoComplete="new-password"
+            className="h-10.5 w-full rounded-md border border-input bg-background pl-9.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+            id="register-confirm-password"
+            placeholder="re-enter password"
+            type={showConfirmPassword ? "text" : "password"}
+            {...form.register("confirmPassword")}
+          />
+          <button
+            aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition p-1"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            type="button"
+          >
+            {showConfirmPassword ? (
+              <EyeOff aria-hidden="true" size={16} />
+            ) : (
+              <Eye aria-hidden="true" size={16} />
+            )}
+          </button>
+        </div>
         {form.formState.errors.confirmPassword && (
-          <p className="mt-1 text-xs text-destructive">
+          <p className="text-xs text-destructive">
             {form.formState.errors.confirmPassword.message}
           </p>
         )}
       </div>
+
+      {/* Submit Button */}
       <button
-        className="h-11 w-full bg-primary text-sm font-medium text-primary-foreground"
-        disabled={form.formState.isSubmitting || registration.isPending}
+        className="flex h-11 w-full items-center justify-center gap-2 rounded-md bg-primary text-sm font-semibold tracking-wide text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 mt-2"
+        disabled={isLoading}
         type="submit"
       >
-        {form.formState.isSubmitting || registration.isPending
-          ? "Creating account..."
-          : "Create account"}
+        {isLoading ? (
+          <>
+            <Loader2 className="animate-spin" size={16} />
+            <span>Creating account...</span>
+          </>
+        ) : (
+          <>
+            <UserPlus size={16} />
+            <span>Create account</span>
+          </>
+        )}
       </button>
     </form>
   );
