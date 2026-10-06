@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  ArrowRight,
   BriefcaseBusiness,
+  Loader2,
   ShieldCheck,
   UserRound,
 } from "lucide-react";
@@ -15,26 +15,35 @@ const demoRoles = [
   {
     role: "ADMIN",
     label: "Admin",
-    detail: "Workspace owner",
+    subtitle: "Workspace Owner",
+    email: "admin@gmail.com",
     destination: "/admin",
     icon: ShieldCheck,
-    tone: "bg-[#e5f2ee] text-[#23665b]",
+    badgeColor:
+      "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800",
+    btnColor: "bg-emerald-700 hover:bg-emerald-800 text-white",
   },
   {
     role: "MANAGER",
     label: "Manager",
-    detail: "Project lead",
+    subtitle: "Project Lead",
+    email: "manager@gmail.com",
     destination: "/manager",
     icon: BriefcaseBusiness,
-    tone: "bg-[#eaf0f8] text-[#426486]",
+    badgeColor:
+      "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400 border-sky-200 dark:border-sky-800",
+    btnColor: "bg-sky-700 hover:bg-sky-800 text-white",
   },
   {
     role: "MEMBER",
     label: "Member",
-    detail: "Contributor",
+    subtitle: "Team Contributor",
+    email: "member@gmail.com",
     destination: "/member",
     icon: UserRound,
-    tone: "bg-[#f3eee5] text-[#83683e]",
+    badgeColor:
+      "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border-amber-200 dark:border-amber-800",
+    btnColor: "bg-amber-700 hover:bg-amber-800 text-white",
   },
 ] as const;
 
@@ -43,12 +52,14 @@ export default function DemoLogin() {
   const [pendingRole, setPendingRole] = useState<string | null>(null);
 
   async function signIn(
-    role: Pick<(typeof demoRoles)[number], "role" | "destination">,
+    role: Pick<(typeof demoRoles)[number], "role" | "destination" | "label">,
   ) {
     setPendingRole(role.role);
     try {
       await demoLogin(role.role);
+      toast.success(`Logged in as Demo ${role.label}`);
       router.push(role.destination);
+      router.refresh();
     } catch (error) {
       toast.error(
         error instanceof Error
@@ -60,45 +71,58 @@ export default function DemoLogin() {
   }
 
   return (
-    <section className="mt-6 border-t border-[#dbe3e1] pt-5">
-      <div className="mb-3 flex items-end justify-between gap-3">
-        <h2 className="text-sm font-semibold text-[#18383e]">Demo workspace</h2>
-        <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-[#849195]">
-          One-click access
-        </span>
+    <section className="space-y-3">
+      <div className="text-center">
+        <h3 className="flex items-center justify-center gap-1.5 text-sm font-semibold text-foreground">
+          <span>Quick Demo Login</span>
+        </h3>
+        <p className="mt-0.5 text-xs text-muted-foreground">
+          One-click evaluation access for all 3 workspace roles
+        </p>
       </div>
-      <div className="grid gap-2">
-        {demoRoles.map(({ icon: Icon, ...demoRole }) => (
-          <button
-            className="group flex min-h-14 items-center gap-3 rounded-md border border-[#dce4e2] bg-white px-3.5 text-left transition hover:border-[#99bfba] hover:bg-[#f6faf8] disabled:cursor-wait disabled:opacity-60"
-            disabled={pendingRole !== null}
-            key={demoRole.role}
-            onClick={() => signIn(demoRole)}
-            type="button"
-          >
-            <span
-              className={`grid size-9 shrink-0 place-items-center rounded-md ${demoRole.tone}`}
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {demoRoles.map((demo) => {
+          const isLoading = pendingRole === demo.role;
+          const isAnyLoading = pendingRole !== null;
+          return (
+            <div
+              className="flex flex-col justify-between rounded-lg border border-border/70 bg-card p-3.5 shadow-xs transition hover:border-primary/40 hover:shadow-sm"
+              key={demo.role}
             >
-              <Icon aria-hidden="true" size={17} strokeWidth={1.8} />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-sm font-semibold text-[#18383e]">
-                {demoRole.label}
-              </span>
-              <span className="mt-0.5 block text-xs text-[#78898b]">
-                {demoRole.detail}
-              </span>
-            </span>
-            <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#28716e]">
-              {pendingRole === demoRole.role ? "Opening..." : "Demo login"}
-              <ArrowRight
-                aria-hidden="true"
-                className="transition-transform group-hover:translate-x-0.5"
-                size={14}
-              />
-            </span>
-          </button>
-        ))}
+              <div>
+                
+                <div className="mt-2">
+                  <h4 className="text-sm font-semibold text-foreground">
+                    {demo.label}
+                  </h4>
+                  <p className="text-[11px] text-muted-foreground">
+                    {demo.subtitle}
+                  </p>
+                  <p className="mt-1 font-mono text-[10px] text-muted-foreground/80 truncate">
+                    {demo.email}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                className={`mt-3.5 flex h-8.5 w-full items-center justify-center gap-1.5 rounded-md text-xs font-semibold tracking-wide transition disabled:cursor-not-allowed disabled:opacity-50 ${demo.btnColor}`}
+                disabled={isAnyLoading}
+                onClick={() => signIn(demo)}
+                type="button"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="animate-spin" size={13} />
+                    <span>Signing in...</span>
+                  </>
+                ) : (
+                  <span>Demo Login</span>
+                )}
+              </button>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

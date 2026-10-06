@@ -1,10 +1,10 @@
-import { ArrowLeft, Zap } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import DemoLogin from "@/components/form/demo-login";
 import GoogleLoginButton from "@/components/form/google-login";
 import LoginForm from "@/components/form/login-form";
+import Header from "@/components/layout/public/Header";
 
 export const metadata: Metadata = {
   title: "Log In",
@@ -20,75 +20,72 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-svh bg-[#f6f8f7] lg:grid lg:grid-cols-2">
-      <section className="flex min-h-svh flex-col px-6 py-6 sm:px-10 sm:py-8 lg:px-12 xl:px-16">
-        <header className="flex items-center justify-between">
-          <Link className="group inline-flex items-center gap-2.5" href="/">
-            <span className="grid size-9 place-items-center bg-[#143c42] text-white transition group-hover:bg-[#0e3035]">
-              <Zap aria-hidden="true" size={17} fill="currentColor" />
-            </span>
-            <span className="font-heading text-lg font-bold tracking-tight text-[#142c31]">
-              SprintFlow
-            </span>
-          </Link>
-          <Link
-            className="inline-flex items-center gap-1.5 text-sm text-[#607277] transition hover:text-[#143c42]"
-            href="/"
-          >
-            <ArrowLeft aria-hidden="true" size={15} />
-            Back to site
-          </Link>
-        </header>
+    <div className="flex h-screen flex-col overflow-hidden bg-background">
+      {/* Navbar */}
+      <Header />
 
-        <main className="flex flex-1 items-center justify-center py-10 sm:py-12">
-          <div className="w-full max-w-105">
-            <div className="mb-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#28716e]">
-                Workspace access
+      <main className="flex flex-1 min-h-0 w-full items-center justify-center p-2 sm:p-4">
+        <div className="grid h-full w-full max-w-7xl overflow-hidden rounded-2xl border border-border/60 bg-card shadow-lg lg:grid-cols-2 ">
+          <div className="flex flex-col justify-between overflow-y-auto p-4 sm:p-6 lg:p-8">
+            <div className="mx-auto w-full max-w-md space-y-4">
+              {/* Card Header */}
+              <div className="space-y-1 text-center lg:text-left">
+                <h1 className="font-heading text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                  Welcome Back
+                </h1>
+                <p className="text-sm text-muted-foreground sm:text-sm">
+                  Login to your workspace to keep your team sprints on track.
+                </p>
+              </div>
+
+              {/* Main Form */}
+              <LoginForm />
+
+              {/* Divider */}
+              <div className="relative flex items-center justify-center my-2">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-border/80" />
+                </div>
+                <span className="relative bg-card px-2 text-[10px] uppercase tracking-widest text-muted-foreground font-medium">
+                  Or continue with
+                </span>
+              </div>
+
+              {/* Social Login Button */}
+              <div className="flex justify-center">
+                <GoogleLoginButton />
+              </div>
+
+              {/* Demo Credential */}
+              <div className="rounded-lg border border-border/80 bg-muted/30 p-3">
+                <DemoLogin />
+              </div>
+
+              {/* Registration Link */}
+              <p className="text-center text-xs text-muted-foreground pt-1">
+                Don&apos;t have an account?{" "}
+                <Link
+                  className="font-semibold text-primary underline-offset-4 hover:underline"
+                  href="/register"
+                >
+                  Create an account
+                </Link>
               </p>
-              <h1 className="mt-3 font-heading text-4xl font-semibold leading-tight text-[#142c31]">
-                Welcome back.
-              </h1>
-              <p className="mt-2 text-sm leading-6 text-[#68797c]">
-                Sign in to keep your projects moving.
-              </p>
             </div>
-            <LoginForm />
-            <div className="my-5 flex items-center gap-3" aria-hidden="true">
-              <span className="h-px flex-1 bg-[#dbe3e1]" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#829093]">
-                Or continue with
-              </span>
-              <span className="h-px flex-1 bg-[#dbe3e1]" />
-            </div>
-            <div className="flex justify-center rounded-md border border-[#dbe3e1] bg-white px-3 py-2.5">
-              <GoogleLoginButton />
-            </div>
-            <DemoLogin />
           </div>
-        </main>
 
-        <footer className="flex justify-between gap-4 text-xs text-[#849195]">
-          <span>© 2026 SprintFlow</span>
-          <Link className="hover:text-[#143c42]" href="/privacy">
-            Privacy
-          </Link>
-        </footer>
-      </section>
-
-      <aside
-        className="relative hidden min-h-svh overflow-hidden bg-[#d9e7e8] lg:block"
-        aria-label="SprintFlow workspace preview"
-      >
-        <Image
-          src="/login.png"
-          alt="A team member planning and tracking work in SprintFlow"
-          fill
-          priority
-          sizes="50vw"
-          className="object-cover object-[center_15%]"
-        />
-      </aside>
+          {/* Right Column */}
+          <div className="relative hidden h-full w-full overflow-hidden bg-muted lg:block">
+            <Image
+              src="/login.png"
+              alt="SprintFlow — Better planning. Greater results."
+              fill
+              className="h-full w-full object-cover object-center"
+              priority
+            />
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
