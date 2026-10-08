@@ -7,6 +7,7 @@ import {
   getMyAssignedTasks,
   getProjectSprints,
   getProjects,
+  getTasks,
   getUsers,
   updateCurrentUser,
   updateSprintStatus,
@@ -19,6 +20,7 @@ import type {
   BoardTaskStatus,
   CreateSprintPayload,
   ProjectQuery,
+  TaskQuery,
   UserQuery,
   UserRole,
 } from "@/types";
@@ -68,6 +70,15 @@ export function useCreateProject() {
   });
 }
 
+export function useGetTasks(query: TaskQuery = {}) {
+  return useQuery({
+    queryKey: ["tasks", query],
+    queryFn: () => getTasks(query),
+    retry: false,
+    staleTime: 30_000,
+  });
+}
+
 export function useMyAssignedTasks() {
   return useQuery({
     queryKey: ["member-tasks"],
@@ -88,6 +99,7 @@ export function useUpdateTaskStatus() {
     Blocked: "BLOCKED",
     Done: "DONE",
   };
+
   return useMutation({
     mutationFn: ({ id, status }: { id: string; status: BoardTaskStatus }) =>
       updateTaskStatus(id, backendStatus[status]),
@@ -104,8 +116,10 @@ export function useUpdateTaskStatus() {
           : "Task status could not be saved.",
       );
     },
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["member-tasks"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["member-tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
   });
 }
 
@@ -155,3 +169,6 @@ export function useUpdateProfile() {
       queryClient.invalidateQueries({ queryKey: ["current-user"] }),
   });
 }
+
+// Alias for getTasks
+export const useTasks = useGetTasks;

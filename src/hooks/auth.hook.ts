@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  demoLogin,
   getCurrentUser,
   googleOAuth,
   userLogin,
@@ -15,6 +16,17 @@ export function useLogin() {
     mutationFn: userLogin,
     onSuccess: (result) => {
       queryClient.setQueryData(currentUserQueryKey, result.user);
+      queryClient.invalidateQueries({ queryKey: currentUserQueryKey });
+    },
+  });
+}
+
+export function useDemoLogin() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (role: "ADMIN" | "MANAGER" | "MEMBER") => demoLogin(role),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: currentUserQueryKey });
     },
   });
 }
@@ -49,3 +61,7 @@ export function useCurrentUser() {
     staleTime: 60_000,
   });
 }
+
+export const useAuthMe = useCurrentUser;
+export const useUserLogin = useLogin;
+export const useUserLogout = useLogout;
