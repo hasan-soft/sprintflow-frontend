@@ -26,9 +26,9 @@ export default function LoginForm() {
     onSubmit: async ({ value }) => {
       setError("");
       try {
-        const result = await loginMutation.mutateAsync(value);
+        await loginMutation.mutateAsync(value);
         toast.success("Signed in successfully");
-        router.push(`/${String(result.role).toLowerCase()}`);
+        router.push("/");
         router.refresh();
       } catch (submitError) {
         const message =

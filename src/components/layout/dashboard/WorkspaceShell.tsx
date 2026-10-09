@@ -1,4 +1,4 @@
-import { CircleHelp } from "lucide-react";
+import { CircleHelp, Home } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import SignOutButton from "@/components/layout/dashboard/SignOutButton";
@@ -16,18 +16,32 @@ export default function WorkspaceShell({
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[236px_minmax(0,1fr)]">
       <aside className="flex flex-col border-b bg-card px-5 py-5 lg:min-h-screen lg:border-b-0 lg:border-r">
-        <Link
-          className="font-heading text-lg font-bold tracking-tight"
-          href={`/${workspaceRole.toLowerCase()}`}
-        >
-          SprintFlow
-          <span className="ml-2 text-xs font-medium text-muted-foreground">
-            {workspaceRole}
-          </span>
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link
+            className="font-heading text-lg font-bold tracking-tight"
+            href={`/${workspaceRole.toLowerCase()}`}
+          >
+            SprintFlow
+            <span className="ml-2 text-xs font-medium text-muted-foreground">
+              {workspaceRole}
+            </span>
+          </Link>
+        </div>
+
+        {/* Back to Home Link */}
+        <div className="mt-4">
+          <Link
+            href="/"
+            className="flex items-center gap-2 rounded-lg border border-border/70 bg-background/60 px-3 py-2 text-xs font-semibold text-muted-foreground transition hover:border-primary/40 hover:bg-accent hover:text-foreground"
+          >
+            <Home className="size-3.5 text-primary" />
+            <span>Back to Home</span>
+          </Link>
+        </div>
+
         <nav
           aria-label="Workspace"
-          className="mt-8 flex gap-1 overflow-x-auto lg:flex-col"
+          className="mt-6 flex gap-1 overflow-x-auto lg:flex-col"
         >
           {links.map(({ href, label, icon: Icon }) => (
             <Link
@@ -40,7 +54,13 @@ export default function WorkspaceShell({
             </Link>
           ))}
         </nav>
-        <div className="mt-auto hidden border-t pt-4 lg:block">
+        <div className="mt-auto hidden border-t pt-4 lg:block space-y-1">
+          <Link
+            className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
+            href="/"
+          >
+            <Home aria-hidden="true" size={17} /> Home website
+          </Link>
           <Link
             className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
             href="/help"

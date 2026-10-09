@@ -36,6 +36,10 @@ export type AuthUser = {
   email: string;
   role: UserRole;
   organizationId?: string | null;
+  avatarUrl?: string | null;
+  picture?: string | null;
+  image?: string | null;
+  avatar?: string | null;
 };
 
 export type AuthSessionResponse = {
@@ -63,6 +67,10 @@ export type WorkspaceUser = {
   email: string;
   role: UserRole;
   status: string;
+  avatarUrl?: string | null;
+  picture?: string | null;
+  image?: string | null;
+  avatar?: string | null;
 };
 
 export type UserQuery = {

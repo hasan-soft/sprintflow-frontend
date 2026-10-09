@@ -15,9 +15,9 @@ export default function GoogleLoginButton() {
       return;
     }
     try {
-      const payload = await googleMutation.mutateAsync(response.credential);
+      await googleMutation.mutateAsync(response.credential);
       toast.success("Signed in with Google");
-      router.push(`/${String(payload.role).toLowerCase()}`);
+      router.push("/");
       router.refresh();
     } catch (error) {
       toast.error(

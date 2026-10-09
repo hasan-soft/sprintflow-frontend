@@ -58,7 +58,7 @@ export default function DemoLogin() {
     try {
       await demoLogin(role.role);
       toast.success(`Logged in as Demo ${role.label}`);
-      router.push(role.destination);
+      router.push("/");
       router.refresh();
     } catch (error) {
       toast.error(
