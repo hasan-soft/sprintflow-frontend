@@ -19,6 +19,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -178,12 +179,13 @@ export default function Header() {
                     className="flex items-center gap-2.5 rounded-full border border-border/80 bg-card/80 py-1 pl-1.5 pr-3 shadow-2xs hover:border-primary/40 hover:bg-muted/50 transition-all cursor-pointer"
                   >
                     {avatar ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={avatar}
                         alt={user.name || "User Avatar"}
+                        width={28}
+                        height={28}
                         className="size-7 rounded-full object-cover ring-1 ring-primary/20"
-                        referrerPolicy="no-referrer"
+                        unoptimized
                       />
                     ) : (
                       <div className="flex size-7 items-center justify-center rounded-full bg-primary/15 font-semibold text-primary text-xs font-heading">
@@ -220,12 +222,13 @@ export default function Header() {
                       return (
                         <div className="border-b border-border/60 px-3 py-2.5 flex items-center gap-2.5">
                           {avatar ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
+                            <Image
                               src={avatar}
                               alt={user.name || "User Avatar"}
+                              width={36}
+                              height={36}
                               className="size-9 rounded-full object-cover ring-1 ring-primary/20 shrink-0"
-                              referrerPolicy="no-referrer"
+                              unoptimized
                             />
                           ) : (
                             <div className="flex size-9 items-center justify-center rounded-full bg-primary/15 font-semibold text-primary text-xs shrink-0">
@@ -342,12 +345,13 @@ export default function Header() {
                 return (
                   <div className="flex items-center gap-3 rounded-xl border border-border/70 bg-muted/40 p-3">
                     {avatar ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={avatar}
                         alt={user.name || "User Avatar"}
+                        width={40}
+                        height={40}
                         className="size-10 rounded-full object-cover ring-1 ring-primary/20 shrink-0"
-                        referrerPolicy="no-referrer"
+                        unoptimized
                       />
                     ) : (
                       <div className="flex size-10 items-center justify-center rounded-full bg-primary/15 font-semibold text-primary text-xs shrink-0">

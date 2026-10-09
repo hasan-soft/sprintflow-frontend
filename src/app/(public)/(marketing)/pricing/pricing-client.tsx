@@ -1,14 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { toast } from "sonner";
 
 import { initiatePayment } from "@/api/payment.api";
-import { useAuthMe } from "@/hooks/auth.hook";
-
 import { useProjects } from "@/hooks";
+import { useAuthMe } from "@/hooks/auth.hook";
 
 export default function PricingClient() {
   const { data: userResponse } = useAuthMe();

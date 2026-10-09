@@ -102,6 +102,9 @@ export default function DemoLogin() {
                   <p className="mt-1 font-mono text-[10px] text-muted-foreground/80 truncate">
                     {demo.email}
                   </p>
+                  <p className="mt-0.5 font-mono text-[10px] text-muted-foreground/80">
+                    Pass: <span className="font-semibold text-foreground">admin123</span>
+                  </p>
                 </div>
               </div>
 
