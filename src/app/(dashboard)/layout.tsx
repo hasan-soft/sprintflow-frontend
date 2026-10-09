@@ -1,47 +1,29 @@
-"use client";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import type { ReactNode } from "react";
 
-import { useAuthMe } from "@/hooks/auth.hook";
-import { Loader2 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+const SUPPORTED_ROLES = ["ADMIN", "MANAGER", "MEMBER"] as const;
+type Role = (typeof SUPPORTED_ROLES)[number];
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
-  const { data: response, isLoading } = useAuthMe();
-  const router = useRouter();
-  const pathname = usePathname();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("sprintflow-access-token");
+  const roleCookie = cookieStore.get("sprintflow-role");
 
-  const user = response && "data" in response ? response.data : response;
+  // No token → send to login
+  if (!token?.value) {
+    redirect("/login");
+  }
 
-  useEffect(() => {
-    if (!isLoading && !user) {
-      router.push("/login");
-      return;
-    }
+  const role = roleCookie?.value?.toUpperCase() as Role | undefined;
 
-    if (user) {
-      if (pathname.startsWith("/admin") && user.role !== "ADMIN") {
-        router.push("/member");
-      } else if (pathname.startsWith("/manager") && user.role !== "MANAGER") {
-        router.push("/member");
-      }
-    }
-  }, [user, isLoading, pathname, router]);
-
-  if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-2">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="text-xs text-muted-foreground">
-            Authenticating session...
-          </p>
-        </div>
-      </div>
-    );
+  // Token exists but role is unrecognised → clear and send to login
+  if (!role || !SUPPORTED_ROLES.includes(role)) {
+    redirect("/login");
   }
 
   return (
