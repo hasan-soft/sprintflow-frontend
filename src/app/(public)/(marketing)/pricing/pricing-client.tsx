@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -8,8 +8,11 @@ import { toast } from "sonner";
 import { initiatePayment } from "@/api/payment.api";
 import { useAuthMe } from "@/hooks/auth.hook";
 
+import { useProjects } from "@/hooks";
+
 export default function PricingClient() {
   const { data: userResponse } = useAuthMe();
+  const projectsQuery = useProjects();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +26,22 @@ export default function PricingClient() {
       return;
     }
 
-    const organizationId = user.organizationId || "default_org";
+    if (user.role === "MEMBER") {
+      toast.error("Only Admins or Managers can upgrade the workspace subscription.");
+      return;
+    }
+
+    const projectOrg = projectsQuery.data?.data?.find(
+      (p) => Boolean(p.organizationId)
+    )?.organizationId;
+
+    const organizationId = user.organizationId || projectOrg;
+
+    if (!organizationId) {
+      toast.info("Please select an organization from the Admin Billing dashboard.");
+      router.push("/admin/billing");
+      return;
+    }
 
     try {
       setLoading(true);
