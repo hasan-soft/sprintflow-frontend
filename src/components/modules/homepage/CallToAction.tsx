@@ -1,9 +1,9 @@
-﻿import Link from "next/link";
-import { ArrowRight, ShieldCheck } from "lucide-react";
+﻿import { ArrowRight, ShieldCheck } from "lucide-react";
+import Link from "next/link";
 
 export default function CallToAction() {
   return (
-    <section className="bg-gradient-to-b from-card to-muted/40 py-24">
+    <section className="bg-linear-to-b from-card to-muted/40 py-24">
       <div className="mx-auto max-w-5xl px-5 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary">
           <ShieldCheck className="size-4" />
@@ -13,7 +13,9 @@ export default function CallToAction() {
           Ready to experience frictionless sprint delivery?
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground leading-relaxed">
-          Join thousands of high-velocity engineering teams. Set up your workspace in under 60 seconds or evaluate immediately with demo accounts.
+          Join thousands of high-velocity engineering teams. Set up your
+          workspace in under 60 seconds or evaluate immediately with demo
+          accounts.
         </p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -33,7 +35,8 @@ export default function CallToAction() {
         </div>
 
         <p className="mt-6 text-xs text-muted-foreground">
-          No credit card required · Free tier available · Stripe Test mode supported
+          No credit card required · Free tier available · Stripe Test mode
+          supported
         </p>
       </div>
     </section>
