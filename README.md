@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ SprintFlow — Agile Project Management SaaS
+#  SprintFlow — Agile Project Management SaaS
 
 An enterprise-grade B2B Project Management and Workflow Tracking SaaS application built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, and **@dnd-kit**. Designed for agile engineering teams to plan sprints, track deliverables, and manage tasks across customizable Kanban workflows.
 
@@ -19,22 +19,22 @@ An enterprise-grade B2B Project Management and Workflow Tracking SaaS applicatio
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 **SprintFlow** is a modern project orchestration platform engineered to streamline development sprints. It replaces complex, bloated enterprise tools with a fast, intuitive interface that supports role-based access, interactive drag-and-drop Kanban execution, and SaaS subscription billing.
 
-### 🌟 Key Highlights
+###  Key Highlights
 
-- **🎯 Interactive Drag-and-Drop Kanban Board:** Built with `@dnd-kit/core` and `@dnd-kit/utilities` supporting smooth card transitions across `To do`, `In progress`, `Review`, `Blocked`, and `Done` with optimistic UI updates and live database synchronization.
-- **🔍 Task Details & Media Modal:** Rich task modals featuring image/screenshot attachments galleries, instant image upload simulation, priority badges, assignee tags, and team discussion comment threads.
-- **🛡️ Robust Role-Based Access Control (RBAC):** Dedicated views and permissions for **Admin**, **Manager**, and **Member** accounts.
-- **💳 Multi-Gateway SaaS Subscriptions:** Integrated billing workflows supporting **Stripe** and **SSLCommerz** for tiered SaaS pricing packages (*Starter*, *Pro*, *Enterprise*).
-- **⚡ Optimistic State Synchronization:** Powered by **Zustand** and **TanStack Query** for instant user feedback and resilient error rollback handling.
-- **🎨 Modern Design System:** High-contrast, accessible UI styled with **Tailwind CSS**, **shadcn/ui**, and **Lucide Icons**.
+- ** Interactive Drag-and-Drop Kanban Board:** Built with `@dnd-kit/core` and `@dnd-kit/utilities` supporting smooth card transitions across `To do`, `In progress`, `Review`, `Blocked`, and `Done` with optimistic UI updates and live database synchronization.
+- ** Task Details & Media Modal:** Rich task modals featuring image/screenshot attachments galleries, instant image upload simulation, priority badges, assignee tags, and team discussion comment threads.
+- ** Robust Role-Based Access Control (RBAC):** Dedicated views and permissions for **Admin**, **Manager**, and **Member** accounts.
+- ** Multi-Gateway SaaS Subscriptions:** Integrated billing workflows supporting **Stripe** and **SSLCommerz** for tiered SaaS pricing packages (*Starter*, *Pro*, *Enterprise*).
+- ** Optimistic State Synchronization:** Powered by **Zustand** and **TanStack Query** for instant user feedback and resilient error rollback handling.
+- ** Modern Design System:** High-contrast, accessible UI styled with **Tailwind CSS**, **shadcn/ui**, and **Lucide Icons**.
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+##  Tech Stack & Architecture
 
 | Layer | Technologies |
 | :--- | :--- |
@@ -50,7 +50,7 @@ An enterprise-grade B2B Project Management and Workflow Tracking SaaS applicatio
 
 ---
 
-## 👥 Demo Access & Credentials
+##  Demo Access & Credentials
 
 The live deployment comes pre-configured with active user accounts for all three organizational roles:
 
@@ -62,7 +62,7 @@ The live deployment comes pre-configured with active user accounts for all three
 
 ---
 
-## 🧩 Core Application Features
+##  Core Application Features
 
 ### 1. Interactive Kanban Workflow
 - Drag and drop cards between status columns: `To do` ➔ `In progress` ➔ `Review` ➔ `Blocked` ➔ `Done`.
@@ -86,7 +86,7 @@ The live deployment comes pre-configured with active user accounts for all three
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -138,7 +138,7 @@ Ensure you have the following installed on your machine:
 
 ---
 
-## 📂 Project Directory Structure
+##  Project Directory Structure
 
 ```text
 src/
@@ -161,7 +161,7 @@ src/
 
 ---
 
-## 🧪 Available Scripts
+##  Available Scripts
 
 | Script | Purpose |
 | :--- | :--- |
@@ -172,15 +172,9 @@ src/
 
 ---
 
-## 🔗 Links & Resources
+##  Links & Resources
 
 - **Frontend Repository:** [github.com/hasan-soft/sprintflow-frontend](https://github.com/hasan-soft/sprintflow-frontend)
 - **Backend Repository:** [github.com/hasan-soft/sprintflow-backend](https://github.com/hasan-soft/sprintflow-backend)
 - **Live Deployment:** [sprintflow-frontend.vercel.app](https://sprintflow-frontend.vercel.app)
 - **Backend API Live Base:** [sprintflow-backend.vercel.app/api/v1](https://sprintflow-backend.vercel.app/api/v1)
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**. Created as part of an Advanced Web Development SaaS assessment.

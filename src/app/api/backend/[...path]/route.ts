@@ -7,11 +7,20 @@ async function proxyBackend(
   context: { params: Promise<{ path: string[] }> },
 ) {
   const { path } = await context.params;
+  const subpath = path.join("/");
   const incomingUrl = new URL(request.url);
-  const upstreamUrl = new URL(backendUrl(path.join("/")));
+  const upstreamUrl = new URL(backendUrl(subpath));
   upstreamUrl.search = incomingUrl.search;
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("sprintflow-access-token")?.value;
+
+  if (subpath === "users/me" && !accessToken) {
+    return NextResponse.json(
+      { success: false, data: null, message: "Unauthenticated" },
+      { status: 401 },
+    );
+  }
+
   const headers = new Headers({
     Accept: request.headers.get("accept") ?? "application/json",
   });
@@ -29,11 +38,26 @@ async function proxyBackend(
           : await request.arrayBuffer(),
       cache: "no-store",
     });
+
+    let status = upstream.status;
+    const bodyText = await upstream.text();
+
+    if (
+      status === 500 &&
+      subpath === "users/me" &&
+      (bodyText.includes("You are not logged in") ||
+        bodyText.includes("jwt malformed") ||
+        bodyText.includes("invalid signature") ||
+        bodyText.includes("jwt expired"))
+    ) {
+      status = 401;
+    }
+
     const responseHeaders = new Headers();
     const responseType = upstream.headers.get("content-type");
     if (responseType) responseHeaders.set("content-type", responseType);
-    return new Response(upstream.body, {
-      status: upstream.status,
+    return new Response(bodyText, {
+      status,
       headers: responseHeaders,
     });
   } catch {

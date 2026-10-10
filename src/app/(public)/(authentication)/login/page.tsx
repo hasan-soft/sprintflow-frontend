@@ -20,13 +20,13 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-background">
+    <div className="flex min-h-screen flex-col bg-background">
       {/* Navbar */}
       <Header />
 
-      <main className="flex flex-1 min-h-0 w-full items-center justify-center p-2 sm:p-4">
-        <div className="grid h-full w-full max-w-7xl overflow-hidden rounded-2xl border border-border/60 bg-card shadow-lg lg:grid-cols-2 ">
-          <div className="flex flex-col justify-between overflow-y-auto p-4 sm:p-6 lg:p-8">
+      <main className="flex flex-1 items-center justify-center p-4 pt-20 sm:p-6 sm:pt-24 lg:p-8 lg:pt-24">
+        <div className="grid w-full max-w-5xl overflow-hidden rounded-2xl border border-border/60 bg-card shadow-lg lg:grid-cols-2">
+          <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10">
             <div className="mx-auto w-full max-w-md space-y-4">
               {/* Card Header */}
               <div className="space-y-1 text-center lg:text-left">
@@ -80,11 +80,12 @@ export default function LoginPage() {
           </div>
 
           {/* Right Column */}
-          <div className="relative hidden h-full w-full overflow-hidden bg-muted lg:block">
+          <div className="relative hidden h-full min-h-[520px] w-full overflow-hidden bg-muted lg:block">
             <Image
               src="/login.png"
               alt="SprintFlow — Better planning. Greater results."
               fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
               className="h-full w-full object-cover object-center"
               priority
             />
