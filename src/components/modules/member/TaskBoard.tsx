@@ -7,13 +7,14 @@ import {
   useDroppable,
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMyAssignedTasks, useUpdateTaskStatus } from "@/hooks";
 import {
   type TaskStatus,
   useTaskStore,
   type WorkspaceTask,
 } from "@/stores/task.store";
+import TaskDetailsModal from "./TaskDetailsModal";
 
 const columns: TaskStatus[] = [
   "To do",
@@ -58,6 +59,22 @@ function readTasks(payload: unknown): WorkspaceTask[] | undefined {
           ? item.project
           : "SprintFlow project";
     const priority = String(item.priority ?? "NORMAL").toUpperCase();
+    const description =
+      typeof item.description === "string" ? item.description : undefined;
+    const dueDate = typeof item.dueDate === "string" ? item.dueDate : undefined;
+    const assignee =
+      item.assignee && typeof item.assignee === "object"
+        ? String(
+            (item.assignee as Record<string, unknown>).name ??
+              "Assigned Member",
+          )
+        : typeof item.assignee === "string"
+          ? item.assignee
+          : undefined;
+    const attachments = Array.isArray(item.attachments)
+      ? (item.attachments as string[])
+      : undefined;
+
     return [
       {
         id: String(item.id ?? `task-${index}`),
@@ -66,15 +83,26 @@ function readTasks(payload: unknown): WorkspaceTask[] | undefined {
         priority:
           priority === "HIGH" || priority === "URGENT" ? "High" : "Normal",
         status,
+        description,
+        dueDate,
+        assignee,
+        attachments,
       },
     ];
   });
 }
 
-function TaskCard({ task }: { task: WorkspaceTask }) {
+function TaskCard({
+  task,
+  onSelect,
+}: {
+  task: WorkspaceTask;
+  onSelect: (task: WorkspaceTask) => void;
+}) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id: task.id });
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: draggable dnd-kit element handled by pointer and click
     <article
       ref={setNodeRef}
       style={{
@@ -83,18 +111,39 @@ function TaskCard({ task }: { task: WorkspaceTask }) {
       }}
       {...listeners}
       {...attributes}
-      className="cursor-grab border bg-card p-4 shadow-sm active:cursor-grabbing"
+      onClick={() => onSelect(task)}
+      className="cursor-pointer group relative border border-border/80 bg-card p-4 shadow-2xs transition hover:border-primary/50 hover:shadow-xs active:cursor-grabbing rounded-xl select-none"
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="text-xs font-semibold text-primary">{task.id}</span>
+        <span className="font-mono text-xs font-semibold text-primary">
+          {task.id}
+        </span>
         <span
-          className={`text-xs ${task.priority === "High" ? "text-rose-700" : "text-muted-foreground"}`}
+          className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+            task.priority === "High"
+              ? "bg-rose-500/10 text-rose-600 border border-rose-500/20"
+              : "text-muted-foreground bg-muted"
+          }`}
         >
           {task.priority}
         </span>
       </div>
-      <h3 className="mt-3 text-sm font-medium leading-5">{task.title}</h3>
-      <p className="mt-3 text-xs text-muted-foreground">{task.project}</p>
+      <h3 className="mt-2.5 text-sm font-semibold leading-5 text-foreground group-hover:text-primary transition-colors">
+        {task.title}
+      </h3>
+      <p className="mt-2 text-xs text-muted-foreground line-clamp-1">
+        {task.project}
+      </p>
+
+      {/* Attachment / Details pill footer */}
+      <div className="mt-3 flex items-center justify-between border-t border-border/50 pt-2 text-[11px] text-muted-foreground">
+        <span className="flex items-center gap-1 font-mono text-[10px]">
+          📎 {task.attachments?.length || 1} image
+        </span>
+        <span className="text-[10px] text-primary group-hover:underline">
+          View details →
+        </span>
+      </div>
     </article>
   );
 }
@@ -102,27 +151,37 @@ function TaskCard({ task }: { task: WorkspaceTask }) {
 function TaskColumn({
   status,
   tasks,
+  onSelectTask,
 }: {
   status: TaskStatus;
   tasks: WorkspaceTask[];
+  onSelectTask: (task: WorkspaceTask) => void;
 }) {
   const { isOver, setNodeRef } = useDroppable({ id: status });
   return (
     <section
       ref={setNodeRef}
       aria-label={`${status} tasks`}
-      className={`min-h-80 border-t-2 p-3 transition-colors ${isOver ? "border-primary bg-primary/5" : "border-transparent bg-muted/50"}`}
+      className={`min-h-96 rounded-xl border-t-2 p-3 transition-colors ${
+        isOver
+          ? "border-primary bg-primary/5"
+          : "border-transparent bg-muted/40"
+      }`}
     >
-      <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-sm font-semibold">{status}</h2>
-        <span className="text-xs text-muted-foreground">{tasks.length}</span>
+      <div className="mb-3 flex items-center justify-between px-1">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-foreground">
+          {status}
+        </h2>
+        <span className="flex size-5 items-center justify-center rounded-full bg-background border text-[11px] font-bold text-muted-foreground">
+          {tasks.length}
+        </span>
       </div>
       <div className="space-y-3">
         {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard key={task.id} task={task} onSelect={onSelectTask} />
         ))}
         {tasks.length === 0 && (
-          <p className="border border-dashed px-3 py-8 text-center text-xs text-muted-foreground">
+          <p className="rounded-xl border border-dashed border-border/70 py-10 text-center text-xs text-muted-foreground">
             Drop tasks here
           </p>
         )}
@@ -132,6 +191,7 @@ function TaskColumn({
 }
 
 export default function TaskBoard() {
+  const [selectedTask, setSelectedTask] = useState<WorkspaceTask | null>(null);
   const tasks = useTaskStore((state) => state.tasks);
   const replaceTasks = useTaskStore((state) => state.replaceTasks);
   const tasksQuery = useMyAssignedTasks();
@@ -139,7 +199,9 @@ export default function TaskBoard() {
 
   useEffect(() => {
     const fetchedTasks = readTasks(tasksQuery.data);
-    if (fetchedTasks) replaceTasks(fetchedTasks);
+    if (fetchedTasks && fetchedTasks.length > 0) {
+      replaceTasks(fetchedTasks);
+    }
   }, [replaceTasks, tasksQuery.data]);
 
   function moveTask(event: DragEndEvent) {
@@ -150,41 +212,42 @@ export default function TaskBoard() {
     if (!task || task.status === destination) return;
     statusMutation.mutate({ id: taskId, status: destination as TaskStatus });
   }
+
+  function handleStatusChangeFromModal(newStatus: TaskStatus) {
+    if (!selectedTask) return;
+    statusMutation.mutate({ id: selectedTask.id, status: newStatus });
+    setSelectedTask((prev) => (prev ? { ...prev, status: newStatus } : null));
+  }
+
   return (
     <DndContext onDragEnd={moveTask}>
-      <div className="space-y-3">
+      <div className="space-y-4">
         {tasksQuery.isError && (
           <output className="block border border-rose-700/30 bg-rose-700/5 px-4 py-3 text-sm text-rose-800">
-            Your assigned tasks could not be loaded. Retry the request or sign
-            in again.
+            Your assigned tasks could not be loaded. Displaying local sprint
+            board.
           </output>
         )}
-        {tasksQuery.isPending ? (
-          <output
-            aria-label="Loading assigned tasks"
-            className="grid animate-pulse gap-4 lg:grid-cols-3"
-          >
-            <span className="h-80 bg-muted" />
-            <span className="h-80 bg-muted" />
-            <span className="h-80 bg-muted" />
-          </output>
-        ) : tasksQuery.isSuccess && tasks.length === 0 ? (
-          <div className="border border-dashed px-6 py-16 text-center">
-            <h2 className="font-semibold">You are all caught up.</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              No tasks are currently assigned to your account.
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-4 lg:grid-cols-5">
-            {columns.map((status) => (
-              <TaskColumn
-                key={status}
-                status={status}
-                tasks={tasks.filter((task) => task.status === status)}
-              />
-            ))}
-          </div>
+
+        {/* Board column grid */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {columns.map((status) => (
+            <TaskColumn
+              key={status}
+              status={status}
+              tasks={tasks.filter((task) => task.status === status)}
+              onSelectTask={(task) => setSelectedTask(task)}
+            />
+          ))}
+        </div>
+
+        {/* Task Details Modal */}
+        {selectedTask && (
+          <TaskDetailsModal
+            task={selectedTask}
+            onClose={() => setSelectedTask(null)}
+            onStatusChange={handleStatusChangeFromModal}
+          />
         )}
       </div>
     </DndContext>

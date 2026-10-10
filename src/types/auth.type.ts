@@ -18,6 +18,10 @@ export type BoardTask = {
   project: string;
   priority: "High" | "Normal";
   status: BoardTaskStatus;
+  description?: string;
+  dueDate?: string;
+  assignee?: string;
+  attachments?: string[];
 };
 
 export type LoginPayload = {

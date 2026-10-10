@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useMyAssignedTasks } from "@/hooks";
+import { DEMO_BACKEND_TASKS } from "@/lib/demo-tasks";
 
 export default function MemberOverviewPage() {
   const tasksQuery = useMyAssignedTasks();
-  const tasks = tasksQuery.data?.data ?? [];
+  const rawTasks = tasksQuery.data?.data ?? [];
+  const tasks = rawTasks.length > 0 ? rawTasks : DEMO_BACKEND_TASKS;
   const counts = [
     {
       label: "To do",
