@@ -116,7 +116,9 @@ function TaskCard({
     >
       <div className="flex items-center justify-between gap-2">
         <span className="font-mono text-xs font-semibold text-primary">
-          {task.id}
+          {task.id.length > 12
+            ? `TASK-${task.id.slice(-4).toUpperCase()}`
+            : task.id}
         </span>
         <span
           className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${
