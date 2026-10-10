@@ -2,12 +2,18 @@
 
 import { type CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useGoogleOAuth } from "@/hooks";
 
 export default function GoogleLoginButton() {
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const googleMutation = useGoogleOAuth();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function signIn(response: CredentialResponse) {
     if (!response.credential) {
@@ -24,6 +30,10 @@ export default function GoogleLoginButton() {
         error instanceof Error ? error.message : "Google sign-in failed.",
       );
     }
+  }
+
+  if (!mounted) {
+    return <div className="h-10 w-full animate-pulse rounded-md bg-muted" />;
   }
 
   return (
