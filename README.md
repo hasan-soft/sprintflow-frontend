@@ -13,8 +13,6 @@ An enterprise-grade B2B Project Management and Workflow Tracking SaaS applicatio
 
 ---
 
-[Live Application](https://sprintflow-frontend.vercel.app) • [Backend Repository](https://github.com/hasan-soft/sprintflow-backend) • [API Documentation](https://sprintflow-backend.vercel.app/api-docs)
-
 </div>
 
 ---
@@ -177,4 +175,4 @@ src/
 - **Frontend Repository:** [github.com/hasan-soft/sprintflow-frontend](https://github.com/hasan-soft/sprintflow-frontend)
 - **Backend Repository:** [github.com/hasan-soft/sprintflow-backend](https://github.com/hasan-soft/sprintflow-backend)
 - **Live Deployment:** [sprintflow-frontend.vercel.app](https://sprintflow-frontend.vercel.app)
-- **Backend API Live Base:** [sprintflow-backend.vercel.app/api/v1](https://sprintflow-backend.vercel.app/api/v1)
+- **Backend API Live Base:** [sprintflow-backend.vercel.app](https://sprintflow-backend.vercel.app)
