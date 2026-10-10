@@ -101,34 +101,14 @@ export function useUpdateTaskStatus() {
   };
 
   return useMutation({
-    mutationFn: async ({
-      id,
-      status,
-    }: {
-      id: string;
-      status: BoardTaskStatus;
-    }) => {
-      if (id.startsWith("TASK-") || id.startsWith("demo-")) {
-        return {
-          success: true,
-          data: null,
-          message: "Task moved successfully",
-        };
-      }
-      return updateTaskStatus(id, backendStatus[status]);
-    },
+    mutationFn: ({ id, status }: { id: string; status: BoardTaskStatus }) =>
+      updateTaskStatus(id, backendStatus[status]),
     onMutate: ({ id, status }) => {
       const previousTasks = useTaskStore.getState().tasks;
       moveTask(id, status);
       return previousTasks;
     },
-    onError: (error, variables, previousTasks) => {
-      if (
-        variables.id.startsWith("TASK-") ||
-        variables.id.startsWith("demo-")
-      ) {
-        return;
-      }
+    onError: (error, _variables, previousTasks) => {
       if (previousTasks) replaceTasks(previousTasks);
       toast.error(
         error instanceof Error
@@ -138,13 +118,8 @@ export function useUpdateTaskStatus() {
     },
     onSuccess: (_, variables) => {
       toast.success(`Task status updated to "${variables.status}"`);
-      if (
-        !variables.id.startsWith("TASK-") &&
-        !variables.id.startsWith("demo-")
-      ) {
-        queryClient.invalidateQueries({ queryKey: ["member-tasks"] });
-        queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      }
+      queryClient.invalidateQueries({ queryKey: ["member-tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
 }
