@@ -40,28 +40,28 @@ export default function ManagerOverviewPage() {
           </p>
         </div>
         <Link
-          className="bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+          className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 transition"
           href="/manager/projects/new"
         >
           New project
         </Link>
       </header>
-      <section className="grid gap-px border bg-border sm:grid-cols-3">
+      <section className="grid gap-4 sm:grid-cols-3">
         {metrics.map((metric) => (
-          <div className="bg-card p-5" key={metric.label}>
-            <p className="text-sm text-muted-foreground">{metric.label}</p>
-            <p className="mt-3 font-heading text-3xl font-semibold">
+          <div className="rounded-xl border border-border/80 bg-card p-5 shadow-xs transition hover:border-primary/40" key={metric.label}>
+            <p className="text-sm font-medium text-muted-foreground">{metric.label}</p>
+            <p className="mt-3 font-heading text-3xl font-semibold text-foreground">
               {projectsQuery.isPending ? "—" : metric.value}
             </p>
           </div>
         ))}
       </section>
       {projectsQuery.isError && (
-        <output className="block border border-rose-700/30 bg-rose-700/5 px-4 py-3 text-sm text-rose-800">
+        <output className="block rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           Project data could not be loaded from the API.
         </output>
       )}
-      <section className="border bg-card">
+      <section className="rounded-xl border border-border/80 bg-card overflow-hidden shadow-xs">
         <div className="flex items-center justify-between border-b px-5 py-4">
           <div>
             <h2 className="font-semibold">Projects in motion</h2>

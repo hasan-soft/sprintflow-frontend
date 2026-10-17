@@ -37,23 +37,23 @@ export default function AdminOverviewPage() {
       </header>
       <section
         aria-label="Workspace metrics"
-        className="grid gap-px border bg-border sm:grid-cols-2 xl:grid-cols-4"
+        className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
       >
         {statsQuery.isPending ? (
-          <div className="col-span-full grid animate-pulse grid-cols-2 gap-px bg-border xl:grid-cols-4">
+          <div className="col-span-full grid animate-pulse grid-cols-2 gap-4 xl:grid-cols-4">
             {metrics.map((metric) => (
-              <div className="h-28 bg-card" key={metric.label} />
+              <div className="h-28 rounded-xl border border-border/80 bg-card shadow-xs" key={metric.label} />
             ))}
           </div>
         ) : statsQuery.isError || !overview ? (
-          <div className="col-span-full bg-card p-6 text-sm text-rose-800">
+          <div className="col-span-full rounded-xl border border-destructive/30 bg-destructive/10 p-6 text-sm text-destructive">
             Workspace analytics could not be loaded from the API.
           </div>
         ) : (
           metrics.map((metric) => (
-            <div className="bg-card p-5" key={metric.label}>
-              <p className="text-sm text-muted-foreground">{metric.label}</p>
-              <p className="mt-3 font-heading text-3xl font-semibold">
+            <div className="rounded-xl border border-border/80 bg-card p-5 shadow-xs transition hover:border-primary/40" key={metric.label}>
+              <p className="text-sm font-medium text-muted-foreground">{metric.label}</p>
+              <p className="mt-3 font-heading text-3xl font-semibold text-foreground">
                 {metric.value ?? 0}
               </p>
               <p className="mt-2 text-xs text-muted-foreground">
@@ -64,7 +64,7 @@ export default function AdminOverviewPage() {
         )}
       </section>
       {overview && <AnalyticsCharts overview={overview} />}
-      <section className="border bg-card p-5">
+      <section className="rounded-xl border border-border/80 bg-card p-6 shadow-xs">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="font-semibold">Workspace administration</h2>

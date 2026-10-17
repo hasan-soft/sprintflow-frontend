@@ -67,12 +67,12 @@ export default function LoginForm() {
               />
               <input
                 autoComplete="email"
-                className="h-10.5 w-full rounded-md border border-input bg-background pl-9.5 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+                className="h-10.5 w-full rounded-xl border border-input bg-background pl-9.5 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
                 id={field.name}
                 name={field.name}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="email here"
+                placeholder="alex@sprintflow.io"
                 type="email"
                 value={field.state.value}
               />
@@ -111,12 +111,12 @@ export default function LoginForm() {
               />
               <input
                 autoComplete="current-password"
-                className="h-10.5 w-full rounded-md border border-input bg-background pl-9.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+                className="h-10.5 w-full rounded-xl border border-input bg-background pl-9.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
                 id={field.name}
                 name={field.name}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="passwor here"
+                placeholder="Enter your password"
                 type={showPassword ? "text" : "password"}
                 value={field.state.value}
               />
@@ -145,7 +145,7 @@ export default function LoginForm() {
       {error && (
         <div
           aria-live="polite"
-          className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive"
+          className="rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive"
         >
           {error}
         </div>
@@ -153,7 +153,7 @@ export default function LoginForm() {
 
       {/* Login Button */}
       <button
-        className="flex h-11 w-full items-center justify-center gap-2 rounded-md bg-primary text-sm font-semibold tracking-wide text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+        className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold tracking-wide text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
         disabled={loginMutation.isPending}
         type="submit"
       >

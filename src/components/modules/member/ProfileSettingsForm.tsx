@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2, Save } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -29,7 +30,7 @@ export default function ProfileSettingsForm() {
   async function saveProfile(values: ProfileValues) {
     try {
       await updateProfile.mutateAsync({ name: values.name });
-      toast.success("Profile settings saved");
+      toast.success("Profile settings saved successfully");
     } catch (error) {
       toast.error(
         error instanceof Error
@@ -43,14 +44,14 @@ export default function ProfileSettingsForm() {
     return (
       <output
         aria-label="Loading profile"
-        className="block h-72 max-w-2xl animate-pulse bg-muted"
+        className="block h-72 max-w-2xl rounded-xl animate-pulse bg-muted/60"
       />
     );
   }
 
   if (profileQuery.isError || !profile) {
     return (
-      <output className="block max-w-2xl border border-rose-700/30 bg-rose-700/5 px-4 py-3 text-sm text-rose-800">
+      <output className="block max-w-2xl rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
         Your profile could not be loaded. Sign in again and retry.
       </output>
     );
@@ -58,16 +59,17 @@ export default function ProfileSettingsForm() {
 
   return (
     <form
-      className="max-w-2xl space-y-5 border bg-card p-6"
+      className="max-w-2xl space-y-5 rounded-xl border border-border/80 bg-card p-6 shadow-xs"
       onSubmit={form.handleSubmit(saveProfile)}
     >
       <div>
-        <label className="text-sm font-medium" htmlFor="profile-name">
-          Full name
+        <label className="text-xs font-semibold tracking-wide text-foreground" htmlFor="profile-name">
+          Full Name
         </label>
         <input
-          className="mt-2 h-11 w-full border bg-background px-3 text-sm"
+          className="mt-1.5 h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
           id="profile-name"
+          placeholder="Your full name"
           {...form.register("name")}
         />
         {form.formState.errors.name && (
@@ -76,34 +78,47 @@ export default function ProfileSettingsForm() {
           </p>
         )}
       </div>
+
       <div>
-        <label className="text-sm font-medium" htmlFor="profile-email">
-          Email address
+        <label className="text-xs font-semibold tracking-wide text-foreground" htmlFor="profile-email">
+          Email Address
         </label>
         <input
-          className="mt-2 h-11 w-full border bg-muted px-3 text-sm"
+          className="mt-1.5 h-11 w-full rounded-xl border border-border/60 bg-muted/60 px-3.5 text-sm font-mono text-muted-foreground cursor-not-allowed"
           id="profile-email"
           readOnly
           value={profile.email}
         />
       </div>
+
       <div>
-        <label className="text-sm font-medium" htmlFor="profile-role">
-          Workspace role
+        <label className="text-xs font-semibold tracking-wide text-foreground" htmlFor="profile-role">
+          Workspace Role
         </label>
         <input
-          className="mt-2 h-11 w-full border bg-muted px-3 text-sm"
+          className="mt-1.5 h-11 w-full rounded-xl border border-border/60 bg-muted/60 px-3.5 text-sm font-mono text-muted-foreground cursor-not-allowed"
           id="profile-role"
           readOnly
           value={profile.role}
         />
       </div>
+
       <button
-        className="bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
+        className="flex h-10.5 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-xs transition hover:bg-primary/90 disabled:opacity-60"
         disabled={updateProfile.isPending}
         type="submit"
       >
-        {updateProfile.isPending ? "Saving..." : "Save profile"}
+        {updateProfile.isPending ? (
+          <>
+            <Loader2 className="animate-spin" size={15} />
+            <span>Saving changes...</span>
+          </>
+        ) : (
+          <>
+            <Save size={15} />
+            <span>Save Profile</span>
+          </>
+        )}
       </button>
     </form>
   );

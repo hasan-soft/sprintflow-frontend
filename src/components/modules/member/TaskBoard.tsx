@@ -123,7 +123,7 @@ function TaskCard({
         <span
           className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${
             task.priority === "High"
-              ? "bg-rose-500/10 text-rose-600 border border-rose-500/20"
+              ? "bg-amber-500/10 text-amber-600 border border-amber-500/20"
               : "text-muted-foreground bg-muted"
           }`}
         >
@@ -225,7 +225,7 @@ export default function TaskBoard() {
     <DndContext onDragEnd={moveTask}>
       <div className="space-y-4">
         {tasksQuery.isError && (
-          <output className="block border border-rose-700/30 bg-rose-700/5 px-4 py-3 text-sm text-rose-800">
+          <output className="block border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
             Your assigned tasks could not be loaded. Displaying local sprint
             board.
           </output>

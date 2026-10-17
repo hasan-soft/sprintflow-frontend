@@ -82,6 +82,13 @@ The live deployment comes pre-configured with active user accounts for all three
 - Transparent pricing tiers with feature breakdown.
 - Support for international card checkout (**Stripe**) and local currency checkout (**SSLCommerz**).
 
+### 5. Cohesive Design System & Color Palette
+- **Strict 3 Primary Colors (+ Neutral Color) Palette:**
+  - **Primary Brand Color (Blue):** Dominant brand identity, CTA buttons, active navigation, Manager role workflows.
+  - **Secondary / Success Color (Emerald Green):** Admin role access, verified accounts, active user badges, completed sprint goals.
+  - **Accent / Alert Color (Warm Amber):** Member role workspace, high-priority ticket tags, star ratings, and attention markers.
+  - **Neutral Foundations (Mist / Slate / White / Charcoal):** High-contrast readability across cards, typography, dividers, and background surfaces.
+
 ---
 
 ##  Getting Started

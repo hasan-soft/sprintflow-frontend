@@ -31,8 +31,8 @@ const demoRoles = [
     destination: "/manager",
     icon: BriefcaseBusiness,
     badgeColor:
-      "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400 border-sky-200 dark:border-sky-800",
-    btnColor: "bg-sky-700 hover:bg-sky-800 text-white",
+      "bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary border-primary/20 dark:border-primary/40",
+    btnColor: "bg-primary hover:bg-primary/90 text-primary-foreground",
   },
   {
     role: "MEMBER",

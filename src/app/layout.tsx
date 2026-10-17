@@ -59,6 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
         "h-full",
         "antialiased",
@@ -69,6 +70,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         jetbrainsMonoHeading.variable,
       )}
     >
+      <head>
+        <script>
+          {`(function(){try{var s=localStorage.getItem('sprintflow-theme');var d=s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme:dark)').matches);if(d)document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');}catch(e){}})();`}
+        </script>
+      </head>
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
       </body>

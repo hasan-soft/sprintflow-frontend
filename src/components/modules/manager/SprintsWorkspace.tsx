@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Loader2, Plus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -71,13 +72,13 @@ export default function SprintsWorkspace() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <label className="text-sm font-medium">
-          Project
+        <label className="flex items-center gap-2 text-xs font-semibold text-foreground">
+          <span>Project:</span>
           <select
             aria-label="Choose project"
-            className="ml-3 h-10 max-w-64 border bg-background px-3 text-sm font-normal"
+            className="h-10 max-w-64 rounded-xl border border-input bg-background px-3 text-sm font-normal text-foreground transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
             disabled={projects.length === 0}
             onChange={(event) => changeProject(event.target.value)}
             value={projectId}
@@ -91,94 +92,115 @@ export default function SprintsWorkspace() {
           </select>
         </label>
         <button
-          className="bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 disabled:opacity-50 transition"
           disabled={!projectId}
           onClick={() => setCreating((value) => !value)}
           type="button"
         >
-          {creating ? "Cancel" : "Create sprint"}
+          {creating ? (
+            <>
+              <X className="size-3.5" />
+              <span>Cancel</span>
+            </>
+          ) : (
+            <>
+              <Plus className="size-3.5" />
+              <span>Create sprint</span>
+            </>
+          )}
         </button>
       </div>
 
       {projectsQuery.isError && (
-        <output className="block border border-rose-700/30 bg-rose-700/5 px-4 py-3 text-sm text-rose-800">
+        <output className="block rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           Projects could not be loaded from the API.
         </output>
       )}
       {creating && (
         <form
-          className="grid gap-4 border bg-card p-5 md:grid-cols-3"
+          className="grid gap-4 rounded-xl border border-border/80 bg-card p-6 shadow-xs md:grid-cols-3"
           onSubmit={form.handleSubmit(submitSprint)}
         >
-          <label className="text-sm font-medium">
-            Sprint name
+          <label className="block text-xs font-semibold tracking-wide text-foreground">
+            Sprint Name
             <input
-              className="mt-2 h-10 w-full border bg-background px-3 font-normal"
+              className="mt-1.5 h-10 w-full rounded-xl border border-input bg-background px-3.5 text-sm font-normal text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+              placeholder="e.g. Sprint 25 - Core Polish"
               {...form.register("name")}
             />
             {form.formState.errors.name && (
-              <span className="mt-1 block text-xs text-destructive">
+              <span className="mt-1.5 block text-xs text-destructive">
                 {form.formState.errors.name.message}
               </span>
             )}
           </label>
-          <label className="text-sm font-medium">
-            Start date
+          <label className="block text-xs font-semibold tracking-wide text-foreground">
+            Start Date
             <input
-              className="mt-2 h-10 w-full border bg-background px-3 font-normal"
+              className="mt-1.5 h-10 w-full rounded-xl border border-input bg-background px-3.5 text-sm font-normal text-foreground transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
               type="date"
               {...form.register("startDate")}
             />
             {form.formState.errors.startDate && (
-              <span className="mt-1 block text-xs text-destructive">
+              <span className="mt-1.5 block text-xs text-destructive">
                 {form.formState.errors.startDate.message}
               </span>
             )}
           </label>
-          <label className="text-sm font-medium">
-            End date
+          <label className="block text-xs font-semibold tracking-wide text-foreground">
+            End Date
             <input
-              className="mt-2 h-10 w-full border bg-background px-3 font-normal"
+              className="mt-1.5 h-10 w-full rounded-xl border border-input bg-background px-3.5 text-sm font-normal text-foreground transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
               type="date"
               {...form.register("endDate")}
             />
             {form.formState.errors.endDate && (
-              <span className="mt-1 block text-xs text-destructive">
+              <span className="mt-1.5 block text-xs text-destructive">
                 {form.formState.errors.endDate.message}
               </span>
             )}
           </label>
-          <div className="md:col-span-3">
+          <div className="md:col-span-3 pt-1">
             <button
-              className="bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 disabled:opacity-60 transition"
               disabled={createMutation.isPending || !projectId}
               type="submit"
             >
-              {createMutation.isPending ? "Creating..." : "Create sprint"}
+              {createMutation.isPending ? (
+                <>
+                  <Loader2 className="size-3.5 animate-spin" />
+                  <span>Creating sprint...</span>
+                </>
+              ) : (
+                <>
+                  <Plus className="size-3.5" />
+                  <span>Confirm and Create Sprint</span>
+                </>
+              )}
             </button>
           </div>
         </form>
       )}
 
       {sprintsQuery.isError && (
-        <output className="block border border-rose-700/30 bg-rose-700/5 px-4 py-3 text-sm text-rose-800">
+        <output className="block rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           Sprints for this project could not be loaded.
         </output>
       )}
       {sprintsQuery.isPending ? (
         <output
           aria-label="Loading sprints"
-          className="block h-64 animate-pulse bg-muted"
+          className="block h-64 rounded-xl animate-pulse bg-muted/60"
         />
       ) : (sprintsQuery.data?.data ?? []).length === 0 ? (
-        <div className="border border-dashed px-6 py-16 text-center">
-          <h2 className="font-semibold">No sprints yet</h2>
+        <div className="rounded-xl border border-dashed border-border/80 px-6 py-16 text-center bg-card/40">
+          <h2 className="font-semibold text-foreground">No sprints yet</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Create the first sprint for this project.
           </p>
         </div>
       ) : (
-        <section className="divide-y border bg-card">
+        <section className="rounded-xl border border-border/80 bg-card divide-y divide-border/60 overflow-hidden shadow-xs">
           {(sprintsQuery.data?.data ?? []).map((sprint) => {
             const completedTasks =
               sprint.tasks?.filter((task) => task.status === "DONE").length ??

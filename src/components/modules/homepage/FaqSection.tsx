@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
@@ -13,7 +13,7 @@ export default function FaqSection() {
     },
     {
       q: "Can I evaluate the platform without signing up?",
-      a: "Yes! On our Login page, we feature 1-Click Demo Login buttons for Admin, Manager, and Member roles so evaluators can inspect each workflow instantly with preloaded mock data.",
+      a: "Yes! On our Login page, we feature 1-Click Demo Login buttons for Admin, Manager, and Member roles so evaluators can inspect each workflow instantly with preloaded realistic workspace data.",
     },
     {
       q: "How is Stripe payment integrated?",

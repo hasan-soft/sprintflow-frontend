@@ -71,9 +71,9 @@ export default function RegisterForm() {
           />
           <input
             autoComplete="name"
-            className="h-10.5 w-full rounded-md border border-input bg-background pl-9.5 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+            className="h-10.5 w-full rounded-xl border border-input bg-background pl-9.5 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
             id="register-name"
-            placeholder="name here"
+            placeholder="Alex Morgan"
             type="text"
             {...form.register("name")}
           />
@@ -100,9 +100,9 @@ export default function RegisterForm() {
           />
           <input
             autoComplete="email"
-            className="h-10.5 w-full rounded-md border border-input bg-background pl-9.5 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+            className="h-10.5 w-full rounded-xl border border-input bg-background pl-9.5 pr-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
             id="register-email"
-            placeholder="email here"
+            placeholder="alex@sprintflow.io"
             type="email"
             {...form.register("email")}
           />
@@ -129,9 +129,9 @@ export default function RegisterForm() {
           />
           <input
             autoComplete="new-password"
-            className="h-10.5 w-full rounded-md border border-input bg-background pl-9.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+            className="h-10.5 w-full rounded-xl border border-input bg-background pl-9.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
             id="register-password"
-            placeholder="at least 8 characters"
+            placeholder="Create password (min 8 chars)"
             type={showPassword ? "text" : "password"}
             {...form.register("password")}
           />
@@ -170,9 +170,9 @@ export default function RegisterForm() {
           />
           <input
             autoComplete="new-password"
-            className="h-10.5 w-full rounded-md border border-input bg-background pl-9.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
+            className="h-10.5 w-full rounded-xl border border-input bg-background pl-9.5 pr-10 text-sm text-foreground placeholder:text-muted-foreground/60 transition focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
             id="register-confirm-password"
-            placeholder="re-enter password"
+            placeholder="Confirm your password"
             type={showConfirmPassword ? "text" : "password"}
             {...form.register("confirmPassword")}
           />
@@ -198,7 +198,7 @@ export default function RegisterForm() {
 
       {/* Submit Button */}
       <button
-        className="flex h-11 w-full items-center justify-center gap-2 rounded-md bg-primary text-sm font-semibold tracking-wide text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 mt-2"
+        className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold tracking-wide text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 mt-2"
         disabled={isLoading}
         type="submit"
       >

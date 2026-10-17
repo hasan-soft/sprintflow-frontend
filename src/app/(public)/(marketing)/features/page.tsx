@@ -51,23 +51,30 @@ export default function FeaturesPage() {
           work legible and the next decision close.
         </p>
       </header>
-      <section className="mt-14 grid gap-x-10 sm:grid-cols-2">
+      <section className="mt-14 grid gap-6 sm:grid-cols-2">
         {features.map((feature) => (
-          <article className="border-t py-6" key={feature.number}>
-            <p className="font-mono text-xs text-primary">{feature.number}</p>
-            <h2 className="mt-3 text-xl font-semibold">{feature.title}</h2>
-            <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
+          <article
+            className="rounded-xl border border-border/80 bg-card p-6 shadow-xs transition hover:border-primary/50 hover:shadow-sm"
+            key={feature.number}
+          >
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 font-mono text-xs font-bold text-primary">
+              {feature.number}
+            </div>
+            <h2 className="mt-4 text-xl font-semibold text-foreground">{feature.title}</h2>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
               {feature.body}
             </p>
           </article>
         ))}
       </section>
-      <Link
-        className="mt-8 inline-flex bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-        href="/register"
-      >
-        Create a workspace
-      </Link>
+      <div className="mt-10">
+        <Link
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 transition"
+          href="/register"
+        >
+          Create a workspace
+        </Link>
+      </div>
     </main>
   );
 }

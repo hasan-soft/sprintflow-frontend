@@ -68,7 +68,7 @@ export default function RoleShowcase() {
             <div className="rounded-lg border bg-card p-3 shadow-2xs">
               <p className="text-[10px] text-muted-foreground uppercase font-medium">Audit Events</p>
               <p className="mt-1 font-heading text-lg font-bold text-foreground">412 Logs</p>
-              <span className="text-[10px] text-sky-600 font-medium">Zero errors</span>
+              <span className="text-[10px] text-primary font-medium">Zero errors</span>
             </div>
           </div>
 
@@ -83,7 +83,7 @@ export default function RoleShowcase() {
               <div className="flex items-center justify-between text-[11px] py-1">
                 <span className="font-mono text-muted-foreground">07:15 AM</span>
                 <span className="text-foreground">Stripe checkout session initialized (#cs_test_84)</span>
-                <span className="text-sky-600 font-medium">Paid</span>
+                <span className="text-primary font-medium">Paid</span>
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@ export default function RoleShowcase() {
       role: "MANAGER",
       title: "Sprint Orchestration & Project Health",
       pill: "For Engineering Leads & PMs",
-      color: "sky",
+      color: "primary",
       badge: "Delivery Command",
       tagline: "Keep teams shipping on time with granular sprint metrics.",
       quickStats: [
@@ -114,10 +114,10 @@ export default function RoleShowcase() {
         <div className="space-y-4 font-sans text-xs">
           <div className="flex items-center justify-between border-b border-border/70 pb-3">
             <div className="flex items-center gap-2">
-              <span className="size-2.5 rounded-full bg-sky-500 animate-pulse" />
+              <span className="size-2.5 rounded-full bg-primary animate-pulse" />
               <span className="font-semibold text-foreground">Manager View · Sprint 24 Delivery Pulse</span>
             </div>
-            <span className="rounded-md border border-sky-500/30 bg-sky-500/10 px-2 py-0.5 text-[11px] font-semibold text-sky-600 dark:text-sky-400">
+            <span className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
               5 Days Left
             </span>
           </div>
@@ -128,10 +128,10 @@ export default function RoleShowcase() {
                 <p className="font-medium text-foreground">Project: Core Web Platform v2</p>
                 <p className="text-[11px] text-muted-foreground">Budget: $14,000 / $20,000 allocated</p>
               </div>
-              <span className="text-xs font-bold text-sky-600">70% Burndown</span>
+              <span className="text-xs font-bold text-primary">70% Burndown</span>
             </div>
             <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
-              <div className="h-full bg-sky-500 rounded-full w-[70%]" />
+              <div className="h-full bg-primary rounded-full w-[70%]" />
             </div>
           </div>
 
@@ -145,7 +145,7 @@ export default function RoleShowcase() {
             <div className="rounded-lg border bg-card p-3">
               <p className="text-[10px] text-muted-foreground uppercase">Project Creation</p>
               <p className="mt-1 font-semibold text-foreground flex items-center gap-1">
-                <PlusCircle className="size-3 text-sky-600" /> Multi-Step Wizard
+                <PlusCircle className="size-3 text-primary" /> Multi-Step Wizard
               </p>
             </div>
           </div>

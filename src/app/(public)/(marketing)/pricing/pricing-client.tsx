@@ -102,9 +102,9 @@ export default function PricingClient() {
           </ul>
         </div>
 
-        <div className="border bg-card p-5">
-          <p className="text-sm text-muted-foreground">Monthly</p>
-          <p className="mt-2 font-heading text-4xl font-semibold">
+        <div className="rounded-xl border border-border/80 bg-card p-6 shadow-xs">
+          <p className="text-sm font-medium text-muted-foreground">Monthly</p>
+          <p className="mt-2 font-heading text-4xl font-semibold text-foreground">
             $49
             <span className="font-sans text-sm font-normal text-muted-foreground">
               {" "}
@@ -116,7 +116,7 @@ export default function PricingClient() {
           </p>
 
           <button
-            className="mt-6 flex w-full items-center justify-center gap-2 bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground shadow-xs transition hover:bg-primary/90 disabled:opacity-50"
             disabled={loading}
             onClick={handleCheckout}
             type="button"

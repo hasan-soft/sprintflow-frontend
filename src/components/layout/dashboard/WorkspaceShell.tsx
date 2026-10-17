@@ -1,7 +1,11 @@
-import { CircleHelp, Home } from "lucide-react";
+"use client";
+
+import { CircleHelp, Home, Menu, X } from "lucide-react";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { usePathname } from "next/navigation";
+import { type ReactNode, useState } from "react";
 import SignOutButton from "@/components/layout/dashboard/SignOutButton";
+import ThemeToggle from "@/components/shared/theme-toggle";
 import { workspaceRoutes } from "@/routes";
 
 export default function WorkspaceShell({
@@ -11,65 +15,161 @@ export default function WorkspaceShell({
   workspaceRole: keyof typeof workspaceRoutes;
   children: ReactNode;
 }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
   const links = workspaceRoutes[workspaceRole];
 
   return (
-    <div className="min-h-screen bg-background lg:grid lg:grid-cols-[236px_minmax(0,1fr)]">
-      <aside className="flex flex-col border-b bg-card px-5 py-5 lg:min-h-screen lg:border-b-0 lg:border-r">
+    <div className="min-h-screen bg-background lg:grid lg:grid-cols-[250px_minmax(0,1fr)]">
+      {/* Mobile Top Header */}
+      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border/80 bg-card/95 px-5 py-3.5 backdrop-blur-md lg:hidden">
+        <Link
+          className="flex items-center gap-2 font-heading text-base font-bold tracking-tight text-foreground"
+          href={`/${workspaceRole.toLowerCase()}`}
+        >
+          <span className="flex size-7 items-center justify-center rounded-lg bg-primary text-xs font-bold text-primary-foreground">
+            SF
+          </span>
+          <span>SprintFlow</span>
+          <span className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+            {workspaceRole}
+          </span>
+        </Link>
+
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex size-9 items-center justify-center rounded-xl border border-border/70 bg-card text-foreground shadow-2xs hover:border-primary/50"
+            aria-label="Toggle workspace navigation"
+          >
+            {mobileMenuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Collapsible Navigation Drawer */}
+      {mobileMenuOpen && (
+        <nav
+          aria-label="Mobile workspace navigation"
+          className="border-b border-border/80 bg-card px-5 py-4 space-y-3 lg:hidden"
+        >
+          <div className="space-y-1">
+            {links.map(({ href, label, icon: Icon }) => {
+              const isActive = pathname === href || (href !== `/${workspaceRole.toLowerCase()}` && pathname.startsWith(href));
+              return (
+                <Link
+                  className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition ${
+                    isActive
+                      ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
+                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                  }`}
+                  href={href}
+                  key={href}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Icon aria-hidden="true" size={17} strokeWidth={1.8} />
+                  <span>{label}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="border-t border-border/70 pt-3 space-y-1">
+            <Link
+              className="flex items-center gap-3 rounded-xl px-3.5 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+              href="/"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Home aria-hidden="true" size={17} />
+              <span>Public Website</span>
+            </Link>
+            <Link
+              className="flex items-center gap-3 rounded-xl px-3.5 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+              href="/help"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <CircleHelp aria-hidden="true" size={17} />
+              <span>Help Center</span>
+            </Link>
+            <div className="pt-1">
+              <SignOutButton />
+            </div>
+          </div>
+        </nav>
+      )}
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden flex-col border-r border-border/80 bg-card px-5 py-6 lg:flex lg:min-h-screen">
         <div className="flex items-center justify-between">
           <Link
-            className="font-heading text-lg font-bold tracking-tight"
+            className="flex items-center gap-2.5 font-heading text-lg font-bold tracking-tight text-foreground"
             href={`/${workspaceRole.toLowerCase()}`}
           >
-            SprintFlow
-            <span className="ml-2 text-xs font-medium text-muted-foreground">
+            <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-xs font-bold text-primary-foreground shadow-2xs">
+              SF
+            </span>
+            <span>SprintFlow</span>
+            <span className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
               {workspaceRole}
             </span>
           </Link>
         </div>
 
         {/* Back to Home Link */}
-        <div className="mt-4">
+        <div className="mt-5">
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-lg border border-border/70 bg-background/60 px-3 py-2 text-xs font-semibold text-muted-foreground transition hover:border-primary/40 hover:bg-accent hover:text-foreground"
+            className="flex items-center gap-2 rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs font-semibold text-muted-foreground transition hover:border-primary/40 hover:bg-accent hover:text-foreground"
           >
             <Home className="size-3.5 text-primary" />
-            <span>Back to Home</span>
+            <span>Back to Public Site</span>
           </Link>
         </div>
 
+        {/* Workspace Navigation Links */}
         <nav
-          aria-label="Workspace"
-          className="mt-6 flex gap-1 overflow-x-auto lg:flex-col"
+          aria-label="Workspace navigation"
+          className="mt-6 flex flex-col gap-1.5 flex-1"
         >
-          {links.map(({ href, label, icon: Icon }) => (
-            <Link
-              className="flex shrink-0 items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground transition hover:bg-accent hover:text-foreground"
-              href={href}
-              key={href}
-            >
-              <Icon aria-hidden="true" size={17} strokeWidth={1.8} />
-              {label}
-            </Link>
-          ))}
+          {links.map(({ href, label, icon: Icon }) => {
+            const isActive = pathname === href || (href !== `/${workspaceRole.toLowerCase()}` && pathname.startsWith(href));
+            return (
+              <Link
+                className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition ${
+                  isActive
+                    ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                }`}
+                href={href}
+                key={href}
+              >
+                <Icon aria-hidden="true" size={17} strokeWidth={1.8} />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
         </nav>
-        <div className="mt-auto hidden border-t pt-4 lg:block space-y-1">
+
+        {/* Sidebar Footer Controls */}
+        <div className="border-t border-border/80 pt-4 space-y-2">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-medium text-muted-foreground">Appearance</span>
+            <ThemeToggle />
+          </div>
           <Link
-            className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
-            href="/"
-          >
-            <Home aria-hidden="true" size={17} /> Home website
-          </Link>
-          <Link
-            className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
+            className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
             href="/help"
           >
-            <CircleHelp aria-hidden="true" size={17} /> Help center
+            <CircleHelp aria-hidden="true" size={17} />
+            <span>Help Center</span>
           </Link>
           <SignOutButton />
         </div>
       </aside>
+
+      {/* Main Content Area */}
       <main className="min-w-0 px-5 py-7 sm:px-8 lg:px-10 lg:py-9">
         {children}
       </main>

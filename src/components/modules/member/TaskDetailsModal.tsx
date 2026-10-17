@@ -66,7 +66,10 @@ export default function TaskDetailsModal({
 
   const handleAddComment = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newComment.trim()) return;
+    if (!newComment.trim()) {
+      toast.error("Please enter a comment message before submitting.");
+      return;
+    }
 
     setComments((prev) => [
       ...prev,
@@ -258,7 +261,7 @@ export default function TaskDetailsModal({
                 <span
                   className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold ${
                     task.priority === "High"
-                      ? "bg-rose-500/10 text-rose-600 border border-rose-500/30"
+                      ? "bg-amber-500/10 text-amber-600 border border-amber-500/30"
                       : "bg-muted text-muted-foreground border border-border"
                   }`}
                 >

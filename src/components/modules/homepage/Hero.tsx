@@ -78,7 +78,7 @@ export default function Hero() {
               {
                 code: "SF-301",
                 task: "Document analytics events",
-                color: "bg-sky-600",
+                color: "bg-primary",
               },
             ].map((task) => (
               <div

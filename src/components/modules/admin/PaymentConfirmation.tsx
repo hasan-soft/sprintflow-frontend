@@ -11,7 +11,7 @@ export default function PaymentConfirmation() {
   if (!sessionId || confirmation.isError) {
     return (
       <main className="mx-auto flex min-h-[70vh] max-w-xl flex-col items-center justify-center px-6 text-center">
-        <p className="text-sm font-semibold text-rose-700">
+        <p className="text-sm font-semibold text-destructive">
           Payment confirmation unavailable
         </p>
         <h1 className="mt-3 font-heading text-3xl font-semibold">

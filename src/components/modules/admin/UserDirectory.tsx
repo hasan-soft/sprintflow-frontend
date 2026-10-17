@@ -131,7 +131,7 @@ export default function UserDirectory() {
       </div>
 
       {usersQuery.isError && (
-        <output className="block border border-rose-700/30 bg-rose-700/5 px-4 py-3 text-sm text-rose-800">
+        <output className="block border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           The live user list could not be loaded. Sign in again or retry the
           request.
         </output>
