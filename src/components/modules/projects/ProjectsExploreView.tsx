@@ -14,11 +14,11 @@ import {
   SlidersHorizontal,
   Sparkles,
   Star,
-  X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import SmartSearch from "@/components/modules/search/SmartSearch";
 import type { ProjectListingItem } from "@/data/projects.data";
 
 interface ProjectsExploreViewProps {
@@ -226,29 +226,21 @@ export default function ProjectsExploreView({
 
           {/* Search & Main Filter Action Bar */}
           <div className="mt-8 flex flex-col gap-3 md:flex-row md:items-center">
-            {/* Search Input */}
+            {/* Smart Search Input with Auto-complete */}
             <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-              <input
-                type="text"
+              <SmartSearch
                 value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
+                onChange={(term) => {
+                  setSearchTerm(term);
+                  setCurrentPage(1);
+                }}
+                onSelect={(term) => {
+                  setSearchTerm(term);
                   setCurrentPage(1);
                 }}
                 placeholder="Search workspaces by name, keyword, or tech stack (e.g. Kafka, Stripe, Next.js)..."
-                className="w-full rounded-2xl border border-border/80 bg-card/90 py-3 pl-10 pr-10 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground shadow-2xs focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary backdrop-blur-md"
+                className="max-w-none"
               />
-              {searchTerm && (
-                <button
-                  type="button"
-                  onClick={() => setSearchTerm("")}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
-                  aria-label="Clear search query"
-                >
-                  <X className="size-4" />
-                </button>
-              )}
             </div>
 
             {/* Sort Dropdown */}

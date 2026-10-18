@@ -2,6 +2,7 @@
 
 import { ArrowUp, Clock, Globe, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
+import AIChatbot from "@/components/modules/chatbot/AIChatbot";
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -253,6 +254,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <AIChatbot />
     </footer>
   );
 }

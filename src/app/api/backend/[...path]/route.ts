@@ -28,16 +28,53 @@ async function proxyBackend(
   if (contentType) headers.set("content-type", contentType);
   if (accessToken) headers.set("authorization", `Bearer ${accessToken}`);
 
+  const requestBody =
+    request.method === "GET" || request.method === "HEAD"
+      ? undefined
+      : await request.arrayBuffer();
+
   try {
-    const upstream = await fetch(upstreamUrl, {
-      method: request.method,
-      headers,
-      body:
-        request.method === "GET" || request.method === "HEAD"
-          ? undefined
-          : await request.arrayBuffer(),
-      cache: "no-store",
-    });
+    let upstream: Response | undefined;
+
+    try {
+      upstream = await fetch(upstreamUrl, {
+        method: request.method,
+        headers,
+        body: requestBody,
+        cache: "no-store",
+      });
+    } catch {
+      // Upstream fetch failed, proceed to local fallback
+    }
+
+    // If remote upstream returned 404 or failed to connect, try local backend (port 5000)
+    if (
+      (!upstream || upstream.status === 404) &&
+      !upstreamUrl.hostname.includes("localhost")
+    ) {
+      try {
+        const localUrl = new URL(`http://localhost:5000/api/v1/${subpath}`);
+        localUrl.search = incomingUrl.search;
+        const localUpstream = await fetch(localUrl, {
+          method: request.method,
+          headers,
+          body: requestBody,
+          cache: "no-store",
+        });
+        if (localUpstream.ok || localUpstream.status !== 404) {
+          upstream = localUpstream;
+        }
+      } catch {
+        // Local backend not reachable
+      }
+    }
+
+    if (!upstream) {
+      return NextResponse.json(
+        { error: "Could not reach the SprintFlow API." },
+        { status: 502 },
+      );
+    }
 
     let status = upstream.status;
     const bodyText = await upstream.text();
