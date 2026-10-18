@@ -1,7 +1,14 @@
 ﻿"use client";
 
+import {
+  CheckCircle2,
+  ChevronRight,
+  Layers,
+  Sparkles,
+  Target,
+  Zap,
+} from "lucide-react";
 import { useState } from "react";
-import { CheckCircle2, ChevronRight, Layers, Sparkles, Target, Zap } from "lucide-react";
 
 export default function WorkflowInteractive() {
   const [activeTab, setActiveTab] = useState(0);
@@ -68,7 +75,8 @@ export default function WorkflowInteractive() {
             A continuous loop from backlog to delivery
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Eliminate fragmented tools. Bring planning, execution, and visibility into one single platform.
+            Eliminate fragmented tools. Bring planning, execution, and
+            visibility into one single platform.
           </p>
         </div>
 
@@ -106,7 +114,10 @@ export default function WorkflowInteractive() {
             </p>
             <ul className="space-y-3 pt-2">
               {current.points.map((pt) => (
-                <li key={pt} className="flex items-start gap-2.5 text-sm text-foreground">
+                <li
+                  key={pt}
+                  className="flex items-start gap-2.5 text-sm text-foreground"
+                >
                   <CheckCircle2 className="size-4.5 shrink-0 text-primary mt-0.5" />
                   <span>{pt}</span>
                 </li>
@@ -116,7 +127,9 @@ export default function WorkflowInteractive() {
 
           <div className="rounded-xl border border-border/60 bg-muted/30 p-6 space-y-4">
             <div className="flex items-center justify-between border-b pb-3 text-xs">
-              <span className="font-mono text-muted-foreground">{current.previewBadge}</span>
+              <span className="font-mono text-muted-foreground">
+                {current.previewBadge}
+              </span>
               <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
                 <Sparkles className="size-3.5" />
                 Live Sync

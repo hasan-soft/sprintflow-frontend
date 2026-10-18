@@ -1,15 +1,11 @@
-﻿export default function SocialProof() {
-  const logos = [
-    "Vercel",
-    "Supabase",
-    "Linear",
-    "Stripe",
-    "GitHub",
-    "Raycast",
-  ];
+export default function SocialProof() {
+  const logos = ["Vercel", "Supabase", "Linear", "Stripe", "GitHub", "Raycast"];
 
   return (
-    <section className="border-b bg-card/40 py-10">
+    <section
+      id="social-proof"
+      className="border-b bg-card/40 py-10 scroll-mt-16"
+    >
       <div className="mx-auto max-w-7xl px-5 text-center">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Powering agile momentum for modern product teams worldwide

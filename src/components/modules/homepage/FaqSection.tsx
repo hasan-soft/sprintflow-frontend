@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -40,7 +40,8 @@ export default function FaqSection() {
             Frequently Asked Questions
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Everything you need to know about SprintFlow features, architecture, and billing.
+            Everything you need to know about SprintFlow features, architecture,
+            and billing.
           </p>
         </div>
 

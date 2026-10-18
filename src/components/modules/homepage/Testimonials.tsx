@@ -1,4 +1,4 @@
-﻿import { Star } from "lucide-react";
+import { Star } from "lucide-react";
 
 export default function Testimonials() {
   const reviews = [
@@ -33,7 +33,8 @@ export default function Testimonials() {
             Loved by engineering teams of all sizes
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Here is what engineering managers and contributors say about shipping with SprintFlow.
+            Here is what engineering managers and contributors say about
+            shipping with SprintFlow.
           </p>
         </div>
 
@@ -46,7 +47,10 @@ export default function Testimonials() {
               <div>
                 <div className="flex gap-1 text-amber-500 mb-4">
                   {[...Array(r.rating)].map((_, i) => (
-                    <Star key={i} className="size-4 fill-amber-500 text-amber-500" />
+                    <Star
+                      key={`star-${r.name}-${i}`}
+                      className="size-4 fill-amber-500 text-amber-500"
+                    />
                   ))}
                 </div>
                 <p className="text-sm text-foreground/90 leading-relaxed italic">
@@ -54,7 +58,9 @@ export default function Testimonials() {
                 </p>
               </div>
               <div className="mt-6 border-t pt-4">
-                <p className="text-sm font-semibold text-foreground">{r.name}</p>
+                <p className="text-sm font-semibold text-foreground">
+                  {r.name}
+                </p>
                 <p className="text-xs text-muted-foreground">{r.role}</p>
               </div>
             </div>

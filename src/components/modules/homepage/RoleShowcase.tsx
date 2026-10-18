@@ -1,25 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import {
   ArrowRight,
-  BarChart3,
   CheckCircle2,
-  CreditCard,
-  FolderGit2,
   KanbanSquare,
   Lock,
   PlusCircle,
   Shield,
   SlidersHorizontal,
-  UserCheck,
-  Users2,
-  Zap,
 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function RoleShowcase() {
-  const [selectedRole, setSelectedRole] = useState<"ADMIN" | "MANAGER" | "MEMBER">("ADMIN");
+  const [selectedRole, setSelectedRole] = useState<
+    "ADMIN" | "MANAGER" | "MEMBER"
+  >("ADMIN");
 
   const roles = {
     ADMIN: {
@@ -47,7 +43,9 @@ export default function RoleShowcase() {
           <div className="flex items-center justify-between border-b border-border/70 pb-3">
             <div className="flex items-center gap-2">
               <span className="size-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-semibold text-foreground">Admin Control Hub · Stripe Test Mode</span>
+              <span className="font-semibold text-foreground">
+                Admin Control Hub · Stripe Test Mode
+              </span>
             </div>
             <span className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
               Active Tier
@@ -56,33 +54,61 @@ export default function RoleShowcase() {
 
           <div className="grid grid-cols-3 gap-2.5">
             <div className="rounded-lg border bg-card p-3 shadow-2xs">
-              <p className="text-[10px] text-muted-foreground uppercase font-medium">Monthly Invoicing</p>
-              <p className="mt-1 font-heading text-lg font-bold text-foreground">$29.00</p>
-              <span className="text-[10px] text-emerald-600 font-medium">Auto-renewing</span>
+              <p className="text-[10px] text-muted-foreground uppercase font-medium">
+                Monthly Invoicing
+              </p>
+              <p className="mt-1 font-heading text-lg font-bold text-foreground">
+                $29.00
+              </p>
+              <span className="text-[10px] text-emerald-600 font-medium">
+                Auto-renewing
+              </span>
             </div>
             <div className="rounded-lg border bg-card p-3 shadow-2xs">
-              <p className="text-[10px] text-muted-foreground uppercase font-medium">Team Members</p>
-              <p className="mt-1 font-heading text-lg font-bold text-foreground">18 Users</p>
-              <span className="text-[10px] text-muted-foreground">Across 3 squads</span>
+              <p className="text-[10px] text-muted-foreground uppercase font-medium">
+                Team Members
+              </p>
+              <p className="mt-1 font-heading text-lg font-bold text-foreground">
+                18 Users
+              </p>
+              <span className="text-[10px] text-muted-foreground">
+                Across 3 squads
+              </span>
             </div>
             <div className="rounded-lg border bg-card p-3 shadow-2xs">
-              <p className="text-[10px] text-muted-foreground uppercase font-medium">Audit Events</p>
-              <p className="mt-1 font-heading text-lg font-bold text-foreground">412 Logs</p>
-              <span className="text-[10px] text-primary font-medium">Zero errors</span>
+              <p className="text-[10px] text-muted-foreground uppercase font-medium">
+                Audit Events
+              </p>
+              <p className="mt-1 font-heading text-lg font-bold text-foreground">
+                412 Logs
+              </p>
+              <span className="text-[10px] text-primary font-medium">
+                Zero errors
+              </span>
             </div>
           </div>
 
           <div className="rounded-lg border bg-card p-3.5 space-y-2">
-            <p className="font-medium text-foreground">Recent Organization Audit Trail</p>
+            <p className="font-medium text-foreground">
+              Recent Organization Audit Trail
+            </p>
             <div className="space-y-1.5">
               <div className="flex items-center justify-between text-[11px] py-1 border-b border-border/40">
-                <span className="font-mono text-muted-foreground">08:42 AM</span>
-                <span className="text-foreground">Role updated: member@gmail.com → MEMBER</span>
+                <span className="font-mono text-muted-foreground">
+                  08:42 AM
+                </span>
+                <span className="text-foreground">
+                  Role updated: member@gmail.com → MEMBER
+                </span>
                 <span className="text-emerald-600 font-medium">Verified</span>
               </div>
               <div className="flex items-center justify-between text-[11px] py-1">
-                <span className="font-mono text-muted-foreground">07:15 AM</span>
-                <span className="text-foreground">Stripe checkout session initialized (#cs_test_84)</span>
+                <span className="font-mono text-muted-foreground">
+                  07:15 AM
+                </span>
+                <span className="text-foreground">
+                  Stripe checkout session initialized (#cs_test_84)
+                </span>
                 <span className="text-primary font-medium">Paid</span>
               </div>
             </div>
@@ -115,7 +141,9 @@ export default function RoleShowcase() {
           <div className="flex items-center justify-between border-b border-border/70 pb-3">
             <div className="flex items-center gap-2">
               <span className="size-2.5 rounded-full bg-primary animate-pulse" />
-              <span className="font-semibold text-foreground">Manager View · Sprint 24 Delivery Pulse</span>
+              <span className="font-semibold text-foreground">
+                Manager View · Sprint 24 Delivery Pulse
+              </span>
             </div>
             <span className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
               5 Days Left
@@ -125,10 +153,16 @@ export default function RoleShowcase() {
           <div className="rounded-lg border bg-card p-3.5 space-y-2.5">
             <div className="flex justify-between items-center">
               <div>
-                <p className="font-medium text-foreground">Project: Core Web Platform v2</p>
-                <p className="text-[11px] text-muted-foreground">Budget: $14,000 / $20,000 allocated</p>
+                <p className="font-medium text-foreground">
+                  Project: Core Web Platform v2
+                </p>
+                <p className="text-[11px] text-muted-foreground">
+                  Budget: $14,000 / $20,000 allocated
+                </p>
               </div>
-              <span className="text-xs font-bold text-primary">70% Burndown</span>
+              <span className="text-xs font-bold text-primary">
+                70% Burndown
+              </span>
             </div>
             <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
               <div className="h-full bg-primary rounded-full w-[70%]" />
@@ -137,13 +171,17 @@ export default function RoleShowcase() {
 
           <div className="grid grid-cols-2 gap-2.5">
             <div className="rounded-lg border bg-card p-3">
-              <p className="text-[10px] text-muted-foreground uppercase">URL Filter Sync</p>
+              <p className="text-[10px] text-muted-foreground uppercase">
+                URL Filter Sync
+              </p>
               <p className="mt-1 font-mono text-[11px] text-foreground bg-muted p-1 rounded">
                 ?q=auth&status=ACTIVE
               </p>
             </div>
             <div className="rounded-lg border bg-card p-3">
-              <p className="text-[10px] text-muted-foreground uppercase">Project Creation</p>
+              <p className="text-[10px] text-muted-foreground uppercase">
+                Project Creation
+              </p>
               <p className="mt-1 font-semibold text-foreground flex items-center gap-1">
                 <PlusCircle className="size-3 text-primary" /> Multi-Step Wizard
               </p>
@@ -177,7 +215,9 @@ export default function RoleShowcase() {
           <div className="flex items-center justify-between border-b border-border/70 pb-3">
             <div className="flex items-center gap-2">
               <span className="size-2.5 rounded-full bg-amber-500" />
-              <span className="font-semibold text-foreground">Member Workspace · Kanban Board</span>
+              <span className="font-semibold text-foreground">
+                Member Workspace · Kanban Board
+              </span>
             </div>
             <span className="rounded-md border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
               Drag-and-Drop
@@ -186,17 +226,27 @@ export default function RoleShowcase() {
 
           <div className="grid grid-cols-3 gap-2">
             <div className="rounded-lg border border-border/60 bg-muted/40 p-2.5 space-y-2">
-              <p className="text-[11px] font-semibold text-muted-foreground">TODO (3)</p>
+              <p className="text-[11px] font-semibold text-muted-foreground">
+                TODO (3)
+              </p>
               <div className="rounded border bg-card p-2 shadow-2xs space-y-1">
-                <p className="font-medium text-foreground text-[11px]">SF-401 Fix Navbar gap</p>
-                <span className="text-[10px] text-amber-600 font-semibold">High</span>
+                <p className="font-medium text-foreground text-[11px]">
+                  SF-401 Fix Navbar gap
+                </p>
+                <span className="text-[10px] text-amber-600 font-semibold">
+                  High
+                </span>
               </div>
             </div>
 
             <div className="rounded-lg border border-border/60 bg-muted/40 p-2.5 space-y-2">
-              <p className="text-[11px] font-semibold text-muted-foreground">IN PROGRESS (2)</p>
+              <p className="text-[11px] font-semibold text-muted-foreground">
+                IN PROGRESS (2)
+              </p>
               <div className="rounded border border-primary/40 bg-card p-2 shadow-2xs space-y-1">
-                <p className="font-medium text-foreground text-[11px]">SF-402 Stripe Webhook</p>
+                <p className="font-medium text-foreground text-[11px]">
+                  SF-402 Stripe Webhook
+                </p>
                 <div className="flex items-center justify-between text-[10px]">
                   <span className="text-primary font-medium">3/4 Subtasks</span>
                   <span className="size-2 rounded-full bg-primary" />
@@ -205,10 +255,16 @@ export default function RoleShowcase() {
             </div>
 
             <div className="rounded-lg border border-border/60 bg-muted/40 p-2.5 space-y-2">
-              <p className="text-[11px] font-semibold text-muted-foreground">DONE (5)</p>
+              <p className="text-[11px] font-semibold text-muted-foreground">
+                DONE (5)
+              </p>
               <div className="rounded border bg-card p-2 shadow-2xs space-y-1 opacity-75">
-                <p className="font-medium line-through text-muted-foreground text-[11px]">SF-398 Zod validation</p>
-                <span className="text-[10px] text-emerald-600 font-semibold">Closed</span>
+                <p className="font-medium line-through text-muted-foreground text-[11px]">
+                  SF-398 Zod validation
+                </p>
+                <span className="text-[10px] text-emerald-600 font-semibold">
+                  Closed
+                </span>
               </div>
             </div>
           </div>
@@ -232,7 +288,8 @@ export default function RoleShowcase() {
             One platform. Three purpose-built workflows.
           </h2>
           <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-            SprintFlow adapts to whoever is sitting in the driver’s seat. Select a role below to explore live dashboard capabilities.
+            SprintFlow adapts to whoever is sitting in the driver’s seat. Select
+            a role below to explore live dashboard capabilities.
           </p>
         </div>
 
@@ -282,7 +339,9 @@ export default function RoleShowcase() {
             <div className="grid grid-cols-3 gap-3 border-y border-border/60 py-4">
               {active.quickStats.map((st) => (
                 <div key={st.label}>
-                  <p className="text-[11px] text-muted-foreground">{st.label}</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    {st.label}
+                  </p>
                   <p className="mt-1 font-heading text-sm font-bold text-foreground">
                     {st.value}
                   </p>
@@ -293,7 +352,10 @@ export default function RoleShowcase() {
             {/* Feature Bullets */}
             <ul className="space-y-2.5 pt-1">
               {active.features.map((feat) => (
-                <li key={feat} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground">
+                <li
+                  key={feat}
+                  className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground"
+                >
                   <CheckCircle2 className="size-4 shrink-0 text-primary mt-0.5" />
                   <span>{feat}</span>
                 </li>
@@ -310,7 +372,10 @@ export default function RoleShowcase() {
                 <ArrowRight className="size-3.5" />
               </Link>
               <span className="text-xs text-muted-foreground">
-                Credentials: <code className="font-mono text-foreground font-semibold">{active.loginEmail}</code>
+                Credentials:{" "}
+                <code className="font-mono text-foreground font-semibold">
+                  {active.loginEmail}
+                </code>
               </span>
             </div>
           </div>
@@ -327,4 +392,3 @@ export default function RoleShowcase() {
     </section>
   );
 }
-
