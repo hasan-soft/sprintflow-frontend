@@ -42,7 +42,10 @@ export default function AdminOverviewPage() {
         {statsQuery.isPending ? (
           <div className="col-span-full grid animate-pulse grid-cols-2 gap-4 xl:grid-cols-4">
             {metrics.map((metric) => (
-              <div className="h-28 rounded-xl border border-border/80 bg-card shadow-xs" key={metric.label} />
+              <div
+                className="h-28 rounded-xl border border-border/80 bg-card shadow-xs"
+                key={metric.label}
+              />
             ))}
           </div>
         ) : statsQuery.isError || !overview ? (
@@ -51,8 +54,13 @@ export default function AdminOverviewPage() {
           </div>
         ) : (
           metrics.map((metric) => (
-            <div className="rounded-xl border border-border/80 bg-card p-5 shadow-xs transition hover:border-primary/40" key={metric.label}>
-              <p className="text-sm font-medium text-muted-foreground">{metric.label}</p>
+            <div
+              className="rounded-xl border border-border/80 bg-card p-5 shadow-xs transition hover:border-primary/40"
+              key={metric.label}
+            >
+              <p className="text-sm font-medium text-muted-foreground">
+                {metric.label}
+              </p>
               <p className="mt-3 font-heading text-3xl font-semibold text-foreground">
                 {metric.value ?? 0}
               </p>

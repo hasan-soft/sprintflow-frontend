@@ -77,9 +77,13 @@ export default function NewProjectPage() {
             step === 1 ? "text-primary" : "text-muted-foreground"
           }`}
         >
-          <span className={`flex size-6 items-center justify-center rounded-full text-[11px] font-bold ${
-            step === 1 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-          }`}>
+          <span
+            className={`flex size-6 items-center justify-center rounded-full text-[11px] font-bold ${
+              step === 1
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground"
+            }`}
+          >
             1
           </span>
           <span>Scope & Objective</span>
@@ -90,9 +94,13 @@ export default function NewProjectPage() {
             step === 2 ? "text-primary" : "text-muted-foreground"
           }`}
         >
-          <span className={`flex size-6 items-center justify-center rounded-full text-[11px] font-bold ${
-            step === 2 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-          }`}>
+          <span
+            className={`flex size-6 items-center justify-center rounded-full text-[11px] font-bold ${
+              step === 2
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground"
+            }`}
+          >
             2
           </span>
           <span>Organization & Resources</span>
@@ -166,13 +174,15 @@ export default function NewProjectPage() {
 
             {projectsQuery.isError && (
               <p className="rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">
-                Could not load organizations. Please try again before creating a project.
+                Could not load organizations. Please try again before creating a
+                project.
               </p>
             )}
 
             {!projectsQuery.isPending && organizations.length === 0 && (
               <p className="rounded-xl border border-border/80 bg-muted/40 p-3 text-xs text-muted-foreground">
-                No organizations are available to this account. You can create a demo project once assigned to an organization.
+                No organizations are available to this account. You can create a
+                demo project once assigned to an organization.
               </p>
             )}
 

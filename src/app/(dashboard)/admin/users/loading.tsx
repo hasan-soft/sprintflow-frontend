@@ -1,6 +1,9 @@
 ﻿export default function AdminUsersLoading() {
   return (
-    <output aria-label="Loading users" className="mx-auto max-w-7xl animate-pulse space-y-6">
+    <output
+      aria-label="Loading users"
+      className="mx-auto max-w-7xl animate-pulse space-y-6"
+    >
       <div className="h-10 w-64 bg-muted" />
       <div className="flex gap-3">
         <div className="h-10 flex-1 bg-muted" />

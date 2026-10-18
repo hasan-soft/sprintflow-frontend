@@ -26,9 +26,5 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  return (
-    <div className="flex h-screen overflow-hidden bg-background">
-      <main className="flex-1 overflow-y-auto p-6">{children}</main>
-    </div>
-  );
+  return <div className="min-h-screen bg-background">{children}</div>;
 }

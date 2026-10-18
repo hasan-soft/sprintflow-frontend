@@ -1,6 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { useProjects } from "@/hooks";
 
 export default function ManagerOverviewPage() {
@@ -27,6 +37,16 @@ export default function ManagerOverviewPage() {
     },
   ];
 
+  // Dynamic Chart Data derived from real projects
+  const chartData = projects.slice(0, 6).map((project) => ({
+    name:
+      project.name.length > 18
+        ? `${project.name.slice(0, 18)}...`
+        : project.name,
+    tasks: project._count?.tasks ?? 0,
+    sprints: project._count?.sprints ?? 0,
+  }));
+
   return (
     <div className="mx-auto max-w-7xl space-y-8">
       <header className="flex flex-wrap items-end justify-between gap-4">
@@ -46,21 +66,103 @@ export default function ManagerOverviewPage() {
           New project
         </Link>
       </header>
+
+      {/* Overview Metric Cards */}
       <section className="grid gap-4 sm:grid-cols-3">
         {metrics.map((metric) => (
-          <div className="rounded-xl border border-border/80 bg-card p-5 shadow-xs transition hover:border-primary/40" key={metric.label}>
-            <p className="text-sm font-medium text-muted-foreground">{metric.label}</p>
+          <div
+            className="rounded-xl border border-border/80 bg-card p-5 shadow-xs transition hover:border-primary/40"
+            key={metric.label}
+          >
+            <p className="text-sm font-medium text-muted-foreground">
+              {metric.label}
+            </p>
             <p className="mt-3 font-heading text-3xl font-semibold text-foreground">
               {projectsQuery.isPending ? "—" : metric.value}
             </p>
           </div>
         ))}
       </section>
+
       {projectsQuery.isError && (
         <output className="block rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           Project data could not be loaded from the API.
         </output>
       )}
+
+      {/* Dynamic Project Workload Chart */}
+      {chartData.length > 0 && (
+        <section className="rounded-2xl border border-border/80 bg-card p-6 shadow-2xs">
+          <div className="mb-5 flex items-start justify-between gap-3">
+            <div>
+              <h2 className="font-heading text-base font-bold text-foreground">
+                Project Task & Sprint Distribution
+              </h2>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Real-time work item volume and sprint velocity across active
+                projects
+              </p>
+            </div>
+            <span className="rounded-md border border-primary/20 bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
+              Dynamic
+            </span>
+          </div>
+          <div
+            className="h-64 w-full"
+            role="img"
+            aria-label="Bar chart showing tasks and sprints per project"
+          >
+            <ResponsiveContainer height="100%" width="100%">
+              <BarChart
+                data={chartData}
+                margin={{ left: -15, right: 10, top: 10 }}
+              >
+                <CartesianGrid
+                  stroke="var(--border)"
+                  strokeDasharray="3 3"
+                  vertical={false}
+                />
+                <XAxis
+                  axisLine={false}
+                  dataKey="name"
+                  tickLine={false}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "var(--card)",
+                    borderColor: "var(--border)",
+                    borderRadius: "0.75rem",
+                    fontSize: "0.75rem",
+                  }}
+                />
+                <Legend
+                  wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }}
+                />
+                <Bar
+                  dataKey="tasks"
+                  name="Tasks"
+                  fill="var(--color-primary)"
+                  radius={[6, 6, 0, 0]}
+                />
+                <Bar
+                  dataKey="sprints"
+                  name="Sprints"
+                  fill="#3b82f6"
+                  radius={[6, 6, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </section>
+      )}
+
+      {/* Projects in Motion List */}
       <section className="rounded-xl border border-border/80 bg-card overflow-hidden shadow-xs">
         <div className="flex items-center justify-between border-b px-5 py-4">
           <div>

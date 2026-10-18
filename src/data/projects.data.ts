@@ -658,6 +658,269 @@ export const projectsData: ProjectListingItem[] = [
     ],
     relatedProjectIds: ["sf-p1", "sf-p3", "sf-p7"],
   },
+  {
+    id: "sf-p9",
+    title: "AI Vector Search & RAG Engine",
+    shortDescription:
+      "Enterprise knowledge base retriever with hybrid dense-sparse embeddings and sub-100ms vector index.",
+    fullDescription:
+      "High-throughput vector search pipeline integrating Qdrant, OpenAI and local Llama-3 embedding models. Features semantic reranking, hybrid BM25 lexical search, real-time chunking webhooks, and enterprise permission-scoped vector queries.",
+    image:
+      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
+    category: "Cloud/DevOps",
+    price: "$36,000",
+    date: "Dec 28, 2026",
+    rating: 4.9,
+    reviewsCount: 38,
+    location: "San Francisco, CA (Remote)",
+    teamSize: "5 ML Engineers · 2 Backend",
+    sprintVelocity: "46 SP / sprint",
+    galleryImages: [
+      {
+        url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
+        caption: "Vector Similarity Latency & Reranking Distribution",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&auto=format&fit=crop&q=80",
+        caption: "Embedding Chunking Pipeline & Qdrant Cluster",
+      },
+    ],
+    specifications: [
+      { label: "Total Sprint Budget", value: "$36,000 USD", badge: "AI Core" },
+      {
+        label: "Target Release Date",
+        value: "Dec 28, 2026",
+        badge: "Sprint 4",
+      },
+      { label: "Vector Database", value: "Qdrant Distributed" },
+      { label: "Search Index", value: "HNSW + BM25 Hybrid" },
+      { label: "Query Latency", value: "< 75ms P95 Worldwide" },
+    ],
+    deliverables: [
+      "Sub-75ms vector similarity retrieval across 10 million documents",
+      "Dynamic document ingestion pipeline with chunking and token budgeting",
+      "Role-based vector access filtering honoring enterprise tenant boundaries",
+    ],
+    techStack: [
+      "Python",
+      "Qdrant",
+      "FastAPI",
+      "TypeScript",
+      "Next.js",
+      "Docker",
+    ],
+    reviews: [
+      {
+        id: "rev-901",
+        name: "Siddharth Rao",
+        role: "Head of AI Architecture",
+        company: "Synthetix Labs",
+        rating: 5,
+        date: "Oct 12, 2026",
+        comment:
+          "The hybrid search recall benchmark jumped from 71% to 94.6%. The cleanest RAG workspace we have evaluated.",
+      },
+    ],
+    relatedProjectIds: ["sf-p3", "sf-p1", "sf-p8"],
+  },
+  {
+    id: "sf-p10",
+    title: "Global Logistics & Route Dispatcher",
+    shortDescription:
+      "Automated fleet tracking, dynamic route re-calculation, and driver mobile dispatch app.",
+    fullDescription:
+      "Turnkey fleet orchestration and route optimization platform. Uses genetic pathfinding algorithms and live traffic APIs to cut delivery times by 28%. Features driver mobile app, automated dispatch triggers, and electronic bill of lading.",
+    image:
+      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&auto=format&fit=crop&q=80",
+    category: "Product",
+    price: "$44,000",
+    date: "Jan 18, 2027",
+    rating: 4.8,
+    reviewsCount: 29,
+    location: "Chicago, IL",
+    teamSize: "7 Engineers",
+    sprintVelocity: "50 SP / sprint",
+    galleryImages: [
+      {
+        url: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&auto=format&fit=crop&q=80",
+        caption: "Fleet GPS Routing & Real-time ETA Telematics",
+      },
+    ],
+    specifications: [
+      {
+        label: "Total Sprint Budget",
+        value: "$44,000 USD",
+        badge: "Enterprise Fleet",
+      },
+      {
+        label: "Target Release Date",
+        value: "Jan 18, 2027",
+        badge: "Milestone 2",
+      },
+      { label: "Mapping Engine", value: "Mapbox GL + OSRM Routing" },
+      { label: "Driver Mobile App", value: "React Native + Offline Storage" },
+      { label: "ETA Accuracy", value: "97.4% Within 5-Minute Window" },
+    ],
+    deliverables: [
+      "Dynamic routing engine re-optimizing live traffic deviations in under 2 seconds",
+      "Offline-first driver mobile app with digital signature capture",
+      "Dispatcher command console with real-time fleet map overlay",
+    ],
+    techStack: [
+      "React Native",
+      "Mapbox",
+      "Go",
+      "PostgreSQL",
+      "Next.js",
+      "Redis",
+    ],
+    reviews: [
+      {
+        id: "rev-1001",
+        name: "Tyler Morrison",
+        role: "VP of Logistics",
+        company: "TransGlobal Freight",
+        rating: 4.8,
+        date: "Oct 09, 2026",
+        comment:
+          "Reduced our daily route fuel expenses by 18% in the first pilot week. Intuitive dispatcher UI.",
+      },
+    ],
+    relatedProjectIds: ["sf-p1", "sf-p2", "sf-p7"],
+  },
+  {
+    id: "sf-p11",
+    title: "DeFi Liquidity & Staking Protocol",
+    shortDescription:
+      "Automated market maker smart contracts, gas-optimized vault yield aggregator, and real-time ledger.",
+    fullDescription:
+      "Decentralized liquidity pool and yield routing protocol written in Solidity and Vyper. Formally verified smart contracts with zero critical vulnerabilities in Trail of Bits audit. Features instant flash loan arbitrage protection and slippage mitigation.",
+    image:
+      "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&auto=format&fit=crop&q=80",
+    category: "FinTech",
+    price: "$49,000",
+    date: "Dec 10, 2026",
+    rating: 5.0,
+    reviewsCount: 71,
+    location: "Zurich, Switzerland (Remote)",
+    teamSize: "4 Protocol Devs · 2 Security Auditors",
+    sprintVelocity: "36 SP / sprint",
+    galleryImages: [
+      {
+        url: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&auto=format&fit=crop&q=80",
+        caption: "Smart Contract Gas Profiling & Liquidity Depth Chart",
+      },
+    ],
+    specifications: [
+      {
+        label: "Total Sprint Budget",
+        value: "$49,000 USD",
+        badge: "Audited Vault",
+      },
+      {
+        label: "Target Release Date",
+        value: "Dec 10, 2026",
+        badge: "Mainnet Staging",
+      },
+      { label: "Smart Contracts", value: "Solidity 0.8.24 + Foundry" },
+      {
+        label: "Audit Certification",
+        value: "Formally Verified by Trail of Bits",
+      },
+      { label: "Supported Chains", value: "Ethereum, Arbitrum, Base" },
+    ],
+    deliverables: [
+      "Gas-optimized AMM contract suite certified with 100% test branch coverage",
+      "Interactive analytics dApp dashboard with wallet connection and live TVL",
+      "Automated multisig emergency pause and timelock governance modules",
+    ],
+    techStack: [
+      "Solidity",
+      "Foundry",
+      "TypeScript",
+      "Next.js",
+      "Wagmi",
+      "Tailwind CSS",
+    ],
+    reviews: [
+      {
+        id: "rev-1101",
+        name: "Christian Müller",
+        role: "Lead Blockchain Architect",
+        company: "Helvetia Digital Assets",
+        rating: 5,
+        date: "Oct 17, 2026",
+        comment:
+          "Zero vulnerabilities reported during audit. Gas optimization is among the best in the industry.",
+      },
+    ],
+    relatedProjectIds: ["sf-p2", "sf-p6", "sf-p1"],
+  },
+  {
+    id: "sf-p12",
+    title: "IoT Edge Telemetry Gateway",
+    shortDescription:
+      "Embedded MQTT sensor broker, offline local buffering, and TLS 1.3 edge-to-cloud synchronization.",
+    fullDescription:
+      "Industrial internet-of-things (IoT) gateway firmware and cloud collector. Deployed on lightweight ARM64 edge gateways, ingesting Modbus, CAN-bus, and OPC-UA industrial sensors. Buffers data offline during factory disconnects and backfills with zero packet loss.",
+    image:
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
+    category: "Engineering",
+    price: "$31,500",
+    date: "Jan 25, 2027",
+    rating: 4.9,
+    reviewsCount: 34,
+    location: "Tokyo, Japan",
+    teamSize: "5 Embedded Devs",
+    sprintVelocity: "40 SP / sprint",
+    galleryImages: [
+      {
+        url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
+        caption: "Industrial Sensor Stream & Factory Floor Telemetry",
+      },
+    ],
+    specifications: [
+      {
+        label: "Total Sprint Budget",
+        value: "$31,500 USD",
+        badge: "Industrial IoT",
+      },
+      {
+        label: "Target Release Date",
+        value: "Jan 25, 2027",
+        badge: "Pilot Testing",
+      },
+      { label: "Firmware Runtime", value: "Rust + Tokio Async Engine" },
+      { label: "Industrial Protocols", value: "MQTT, Modbus TCP, OPC-UA" },
+      { label: "Local Buffer", value: "SQLite Offline Queue (Up to 30 Days)" },
+    ],
+    deliverables: [
+      "Ultra-low memory footprint (< 35MB RAM) gateway daemon running on Linux ARM64",
+      "Automatic store-and-forward local buffering ensuring zero telemetry data drop",
+      "Cloud ingestion endpoints scaling to 250,000 concurrent edge connections",
+    ],
+    techStack: [
+      "Rust",
+      "MQTT",
+      "Docker",
+      "TypeScript",
+      "Next.js",
+      "TimescaleDB",
+    ],
+    reviews: [
+      {
+        id: "rev-1201",
+        name: "Kenzo Tanaka",
+        role: "Director of Smart Manufacturing",
+        company: "Nippon Automation Systems",
+        rating: 5,
+        date: "Oct 06, 2026",
+        comment:
+          "Flawless reliability across our 4 automotive assembly factories. The Rust daemon never crashed once.",
+      },
+    ],
+    relatedProjectIds: ["sf-p1", "sf-p3", "sf-p5"],
+  },
 ];
 
 export function getProjectById(id: string): ProjectListingItem | undefined {

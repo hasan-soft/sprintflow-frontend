@@ -1,6 +1,9 @@
 ﻿export default function MemberProfileLoading() {
   return (
-    <output aria-label="Loading profile" className="mx-auto max-w-3xl animate-pulse space-y-6">
+    <output
+      aria-label="Loading profile"
+      className="mx-auto max-w-3xl animate-pulse space-y-6"
+    >
       <div className="h-10 w-32 bg-muted" />
       <div className="flex items-center gap-4 border bg-card p-6">
         <div className="h-20 w-20 rounded-full bg-muted" />

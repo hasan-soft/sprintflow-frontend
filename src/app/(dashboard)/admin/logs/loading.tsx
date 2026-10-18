@@ -1,6 +1,9 @@
 ﻿export default function AdminLogsLoading() {
   return (
-    <output aria-label="Loading activity logs" className="mx-auto max-w-5xl animate-pulse space-y-6">
+    <output
+      aria-label="Loading activity logs"
+      className="mx-auto max-w-5xl animate-pulse space-y-6"
+    >
       <div className="h-10 w-52 bg-muted" />
       <div className="space-y-px border bg-card">
         {[1, 2, 3, 4, 5, 6].map((i) => (

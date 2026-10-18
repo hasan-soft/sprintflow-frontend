@@ -1,6 +1,9 @@
 ﻿export default function ManagerProjectsLoading() {
   return (
-    <output aria-label="Loading projects" className="mx-auto max-w-7xl animate-pulse space-y-7">
+    <output
+      aria-label="Loading projects"
+      className="mx-auto max-w-7xl animate-pulse space-y-7"
+    >
       <div className="flex items-end justify-between gap-4">
         <div className="space-y-2">
           <div className="h-3 w-20 bg-muted" />

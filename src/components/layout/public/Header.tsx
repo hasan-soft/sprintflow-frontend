@@ -154,18 +154,20 @@ export default function Header() {
     icon?: typeof CheckSquare;
   }
 
-  // Base public routes (>= 4 routes when logged out: 5 routes total)
+  // Base public routes (>= 4 routes when logged out: 6 routes total)
   const loggedOutRoutes: NavRouteItem[] = [
     { name: "Home", url: "/" },
+    { name: "Projects", url: "/projects" },
     { name: "Features", url: "/features" },
     { name: "Pricing", url: "/pricing" },
     { name: "About", url: "/about-us" },
     { name: "Contact", url: "/contact" },
   ];
 
-  // Dynamic routes when logged in (>= 6 routes: 7 routes total)
+  // Dynamic routes when logged in (>= 6 routes: 8 routes total)
   const loggedInRoutes: NavRouteItem[] = [
     { name: "Home", url: "/" },
+    { name: "Projects", url: "/projects" },
     { name: "Features", url: "/features" },
     { name: "Pricing", url: "/pricing" },
     { name: "About", url: "/about-us" },

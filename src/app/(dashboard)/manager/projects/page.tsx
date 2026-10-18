@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useProjects } from "@/hooks";
@@ -131,26 +132,57 @@ export default function ManagerProjectsPage() {
           </tbody>
         </table>
       </div>
-      <div className="flex items-center justify-between text-sm">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
         <p className="text-muted-foreground">
-          {meta ? `${meta.total} projects` : "Loading projects..."}
+          Showing{" "}
+          <strong className="text-foreground">
+            {meta ? meta.total : projects.length}
+          </strong>{" "}
+          projects · Page <strong className="text-foreground">{page}</strong> of{" "}
+          <strong className="text-foreground">
+            {Math.max(1, meta?.totalPages ?? 1)}
+          </strong>
         </p>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-1.5">
           <button
-            className="border px-3 py-2 disabled:opacity-40"
+            className="flex size-8 items-center justify-center rounded-xl border border-border/80 bg-card text-foreground hover:bg-muted disabled:opacity-40 disabled:pointer-events-none transition cursor-pointer"
             disabled={!meta || Number(page) <= 1}
             onClick={() => updateParams({ page: String(Number(page) - 1) })}
             type="button"
+            aria-label="Previous page"
           >
-            Previous
+            <ChevronLeft className="size-4" />
           </button>
+
+          {Array.from({ length: Math.max(1, meta?.totalPages ?? 1) }).map(
+            (_, idx) => {
+              const pageNum = idx + 1;
+              const isActive = Number(page) === pageNum;
+              return (
+                <button
+                  key={`proj-page-${pageNum}`}
+                  type="button"
+                  onClick={() => updateParams({ page: String(pageNum) })}
+                  className={`size-8 rounded-xl text-xs font-bold transition cursor-pointer ${
+                    isActive
+                      ? "bg-primary text-primary-foreground shadow-2xs"
+                      : "border border-border/80 bg-card text-foreground hover:bg-muted"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              );
+            },
+          )}
+
           <button
-            className="border px-3 py-2 disabled:opacity-40"
+            className="flex size-8 items-center justify-center rounded-xl border border-border/80 bg-card text-foreground hover:bg-muted disabled:opacity-40 disabled:pointer-events-none transition cursor-pointer"
             disabled={!meta || Number(page) >= meta.totalPages}
             onClick={() => updateParams({ page: String(Number(page) + 1) })}
             type="button"
+            aria-label="Next page"
           >
-            Next
+            <ChevronRight className="size-4" />
           </button>
         </div>
       </div>

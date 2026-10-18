@@ -1,6 +1,9 @@
 ﻿export default function MemberActivityLoading() {
   return (
-    <output aria-label="Loading activity" className="mx-auto max-w-4xl animate-pulse space-y-6">
+    <output
+      aria-label="Loading activity"
+      className="mx-auto max-w-4xl animate-pulse space-y-6"
+    >
       <div className="h-10 w-36 bg-muted" />
       <div className="space-y-px border bg-card">
         {[1, 2, 3, 4, 5, 6].map((i) => (

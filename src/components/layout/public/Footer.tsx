@@ -87,6 +87,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/projects"
+                  className="transition hover:text-primary font-medium text-foreground"
+                >
+                  Explore Workspaces
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/features"
                   className="transition hover:text-primary"
                 >
