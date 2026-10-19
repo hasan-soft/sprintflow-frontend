@@ -26,6 +26,7 @@ export default function GoogleLoginButton() {
       router.push("/");
       router.refresh();
     } catch (error) {
+      console.error("[Google Auth Error]:", error);
       toast.error(
         error instanceof Error ? error.message : "Google sign-in failed.",
       );
@@ -38,7 +39,12 @@ export default function GoogleLoginButton() {
 
   return (
     <GoogleLogin
-      onError={() => toast.error("Google sign-in failed.")}
+      onError={() => {
+        console.error(
+          "[Google OAuth]: Login initialization or popup failed. Check if http://localhost:3000 is added in Google Cloud Console Authorized JavaScript origins.",
+        );
+        toast.error("Google sign-in failed.");
+      }}
       onSuccess={signIn}
     />
   );
