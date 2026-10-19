@@ -11,6 +11,8 @@ export default function GoogleProvider({ children }: { children: ReactNode }) {
     process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || FALLBACK_CLIENT_ID;
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>{children}</GoogleOAuthProvider>
+    <GoogleOAuthProvider clientId={clientId} locale="en">
+      {children}
+    </GoogleOAuthProvider>
   );
 }

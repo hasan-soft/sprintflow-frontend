@@ -39,6 +39,8 @@ export default function GoogleLoginButton() {
 
   return (
     <GoogleLogin
+      text="signin_with"
+      shape="rectangular"
       onError={() => {
         console.error(
           "[Google OAuth]: Login initialization or popup failed. Check if http://localhost:3000 is added in Google Cloud Console Authorized JavaScript origins.",
