@@ -92,6 +92,9 @@ export type WorkspaceProject = {
   organizationId: string;
   organization?: { id: string; name: string };
   _count?: { tasks: number; sprints: number };
+  createdAt?: string;
+  sprints?: unknown[];
+  tasks?: unknown[];
 };
 
 export type WorkspaceTask = {

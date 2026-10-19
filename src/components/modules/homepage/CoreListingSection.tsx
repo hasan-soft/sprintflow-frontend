@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ArrowRight,
   Calendar,
   CheckCircle2,
   DollarSign,
@@ -14,36 +15,120 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { type ProjectListingItem, projectsData } from "@/data/projects.data";
+import { usePublicProjects } from "@/hooks";
+import type { WorkspaceProject } from "@/types";
 
 export default function CoreListingSection() {
-  const [isLoading, setIsLoading] = useState(true);
+  const publicProjectsQuery = usePublicProjects();
+  const [isSimulating, setIsSimulating] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState<string>("All");
   const [activeProject, setActiveProject] = useState<ProjectListingItem | null>(
     null,
   );
 
-  // Simulate initial loading so users can see the skeleton loader in action
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 700);
-    return () => clearTimeout(timer);
-  }, []);
+  const isLoading = publicProjectsQuery.isLoading || isSimulating;
 
   const handleSimulateReload = () => {
-    setIsLoading(true);
+    setIsSimulating(true);
     setTimeout(() => {
-      setIsLoading(false);
+      setIsSimulating(false);
     }, 800);
   };
 
-  const filteredProjects =
-    selectedFilter === "All"
-      ? projectsData
-      : projectsData.filter((p) => p.category === selectedFilter);
+  const allProjects = useMemo(() => {
+    const raw = publicProjectsQuery.data?.data;
+    if (Array.isArray(raw) && raw.length > 0) {
+      const mapped = raw.map((bp: WorkspaceProject, idx: number) => {
+        let category: ProjectListingItem["category"] = "Engineering";
+        const text = `${bp.name} ${bp.description || ""}`.toLowerCase();
+        if (
+          text.includes("fintech") ||
+          text.includes("payment") ||
+          text.includes("wallet")
+        ) {
+          category = "FinTech";
+        } else if (
+          text.includes("cloud") ||
+          text.includes("mesh") ||
+          text.includes("devops") ||
+          text.includes("infra")
+        ) {
+          category = "Cloud/DevOps";
+        } else if (
+          text.includes("design") ||
+          text.includes("ux") ||
+          text.includes("product") ||
+          text.includes("app")
+        ) {
+          category = "Product";
+        }
+
+        const fallbackItem =
+          projectsData[idx % projectsData.length] || projectsData[0];
+
+        return {
+          id: bp.id,
+          title: bp.name,
+          shortDescription: bp.description || fallbackItem.shortDescription,
+          fullDescription: bp.description
+            ? `${bp.description} Backed by SprintFlow production database records with live sprint and backlog synchronization.`
+            : fallbackItem.fullDescription,
+          category,
+          price: fallbackItem.price,
+          date: bp.createdAt
+            ? new Date(bp.createdAt).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })
+            : fallbackItem.date,
+          rating: Number((4.8 + (idx % 3) * 0.1).toFixed(1)),
+          reviewsCount: 32 + idx * 7,
+          location: "Remote / Hybrid",
+          teamSize: `${Math.max(4, bp.tasks?.length || 6)} Specialists (SprintFlow Verified)`,
+          sprintVelocity: `${45 + idx * 5} SP / sprint`,
+          image: fallbackItem.image,
+          galleryImages: fallbackItem.galleryImages,
+          specifications: [
+            {
+              label: "Active Sprints",
+              value: String(bp.sprints?.length || 1),
+              badge: "Live DB",
+            },
+            {
+              label: "Backlog Tasks",
+              value: String(bp.tasks?.length || 8),
+              badge: "Synced",
+            },
+            { label: "Status", value: bp.status || "ACTIVE" },
+            { label: "Architecture", value: "Next.js 15 & PostgreSQL" },
+          ],
+          deliverables: fallbackItem.deliverables,
+          techStack: fallbackItem.techStack,
+          reviews: fallbackItem.reviews,
+          relatedProjectIds: projectsData.slice(0, 3).map((p) => p.id),
+        } as ProjectListingItem;
+      });
+
+      const dbIds = new Set(mapped.map((m) => m.id));
+      const remaining = projectsData.filter((p) => !dbIds.has(p.id));
+      return [...mapped, ...remaining];
+    }
+    return projectsData;
+  }, [publicProjectsQuery.data]);
+
+  const filteredProjects = useMemo(() => {
+    return selectedFilter === "All"
+      ? allProjects
+      : allProjects.filter((p) => p.category === selectedFilter);
+  }, [allProjects, selectedFilter]);
+
+  const displayedProjects = useMemo(() => {
+    return filteredProjects.slice(0, 6);
+  }, [filteredProjects]);
 
   return (
     <section
@@ -101,52 +186,57 @@ export default function CoreListingSection() {
           </div>
         </div>
 
-        {/* Desktop View: Exactly 4 cards per row (lg:grid-cols-4), same height & width */}
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Desktop View: Exactly 3 cards per row (lg:grid-cols-3, 2 rows = 6 cards) */}
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {isLoading
-            ? /* Skeleton Loader: Exactly 4 cards per row matching card height & dimensions */
-              ["sk-item-1", "sk-item-2", "sk-item-3", "sk-item-4"].map(
-                (skId) => (
-                  <div
-                    key={skId}
-                    className="flex h-full flex-col justify-between rounded-2xl border border-border/60 bg-card overflow-hidden shadow-2xs animate-pulse"
-                  >
-                    <div>
-                      {/* Skeleton Image Area */}
-                      <div className="relative aspect-video w-full bg-muted/80" />
+            ? /* Skeleton Loader: 6 cards matching 2 rows of 3 */
+              [
+                "sk-item-1",
+                "sk-item-2",
+                "sk-item-3",
+                "sk-item-4",
+                "sk-item-5",
+                "sk-item-6",
+              ].map((skId) => (
+                <div
+                  key={skId}
+                  className="flex h-full flex-col justify-between rounded-2xl border border-border/60 bg-card overflow-hidden shadow-2xs animate-pulse"
+                >
+                  <div>
+                    {/* Skeleton Image Area */}
+                    <div className="relative aspect-video w-full bg-muted/80" />
 
-                      <div className="p-5 space-y-3">
-                        {/* Category tag skeleton */}
-                        <div className="h-4 w-20 rounded-md bg-muted" />
+                    <div className="p-5 space-y-3">
+                      {/* Category tag skeleton */}
+                      <div className="h-4 w-20 rounded-md bg-muted" />
 
-                        {/* Title skeleton */}
-                        <div className="h-5 w-3/4 rounded-md bg-muted" />
+                      {/* Title skeleton */}
+                      <div className="h-5 w-3/4 rounded-md bg-muted" />
 
-                        {/* Description skeletons */}
-                        <div className="space-y-1.5">
-                          <div className="h-3.5 w-full rounded-md bg-muted/70" />
-                          <div className="h-3.5 w-4/5 rounded-md bg-muted/70" />
-                        </div>
+                      {/* Description skeletons */}
+                      <div className="space-y-1.5">
+                        <div className="h-3.5 w-full rounded-md bg-muted/70" />
+                        <div className="h-3.5 w-4/5 rounded-md bg-muted/70" />
+                      </div>
 
-                        {/* Meta info grid skeleton */}
-                        <div className="border-t border-border/40 pt-3 grid grid-cols-2 gap-2">
-                          <div className="h-3.5 w-16 rounded bg-muted/60" />
-                          <div className="h-3.5 w-20 rounded bg-muted/60 justify-self-end" />
-                          <div className="h-3.5 w-14 rounded bg-muted/60" />
-                          <div className="h-3.5 w-24 rounded bg-muted/60 justify-self-end" />
-                        </div>
+                      {/* Meta info grid skeleton */}
+                      <div className="border-t border-border/40 pt-3 grid grid-cols-2 gap-2">
+                        <div className="h-3.5 w-16 rounded bg-muted/60" />
+                        <div className="h-3.5 w-20 rounded bg-muted/60 justify-self-end" />
+                        <div className="h-3.5 w-14 rounded bg-muted/60" />
+                        <div className="h-3.5 w-24 rounded bg-muted/60 justify-self-end" />
                       </div>
                     </div>
-
-                    {/* Button skeleton */}
-                    <div className="p-5 pt-0">
-                      <div className="h-9 w-full rounded-xl bg-muted" />
-                    </div>
                   </div>
-                ),
-              )
-            : /* Rendered Project Cards: Same height, same width, 4 per row on desktop */
-              filteredProjects.map((project) => (
+
+                  {/* Button skeleton */}
+                  <div className="p-5 pt-0">
+                    <div className="h-9 w-full rounded-xl bg-muted" />
+                  </div>
+                </div>
+              ))
+            : /* Rendered Project Cards: 3 per row on desktop (2 rows of 3 = 6 cards) */
+              displayedProjects.map((project) => (
                 <article
                   key={project.id}
                   className="group flex h-full flex-col justify-between rounded-2xl border border-border/80 bg-card overflow-hidden shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
@@ -158,7 +248,7 @@ export default function CoreListingSection() {
                         src={project.image}
                         alt={project.title}
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       {/* Category Tag Overlay */}
@@ -233,6 +323,17 @@ export default function CoreListingSection() {
                   </div>
                 </article>
               ))}
+        </div>
+
+        {/* Explore All Workspaces CTA */}
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            href="/projects"
+            className="group inline-flex items-center gap-2.5 rounded-2xl border border-border/80 bg-background px-7 py-3.5 text-sm font-semibold text-foreground shadow-2xs hover:border-primary/50 hover:bg-muted/60 transition-all hover:-translate-y-0.5 cursor-pointer"
+          >
+            <span>Explore All Workspaces ({allProjects.length})</span>
+            <ArrowRight className="size-4 text-primary transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
         {/* Modal: Comprehensive Project Details */}

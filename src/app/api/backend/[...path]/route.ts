@@ -47,9 +47,9 @@ async function proxyBackend(
       // Upstream fetch failed, proceed to local fallback
     }
 
-    // If remote upstream returned 404 or failed to connect, try local backend (port 5000)
+    // If remote upstream returned an error (404, 500) or failed to connect, try local backend (port 5000)
     if (
-      (!upstream || upstream.status === 404) &&
+      (!upstream || upstream.status >= 400) &&
       !upstreamUrl.hostname.includes("localhost")
     ) {
       try {

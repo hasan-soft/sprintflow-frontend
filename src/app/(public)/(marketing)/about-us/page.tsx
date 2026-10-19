@@ -1,5 +1,5 @@
+import { ShieldCheck, Target, Zap } from "lucide-react";
 import type { Metadata } from "next";
-import { CheckCircle2, ShieldCheck, Target, Users, Zap } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -68,10 +68,12 @@ export default function AboutUsPage() {
           Good work deserves a clear path forward.
         </h1>
         <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-          SprintFlow was engineered to solve modern agile friction. While legacy project tools
-          accumulated bloated menus and slow page loads, engineering squads struggled to simply understand
-          what needed shipping next. We built SprintFlow to unify sprint capacity, interactive task execution,
-          and transparent subscription health in one focused workspace.
+          SprintFlow was engineered to solve modern agile friction. While legacy
+          project tools accumulated bloated menus and slow page loads,
+          engineering squads struggled to simply understand what needed shipping
+          next. We built SprintFlow to unify sprint capacity, interactive task
+          execution, and transparent subscription health in one focused
+          workspace.
         </p>
       </section>
 
@@ -82,7 +84,8 @@ export default function AboutUsPage() {
             What drives our engineering
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Three principles behind every component, API route, and interaction in SprintFlow.
+            Three principles behind every component, API route, and interaction
+            in SprintFlow.
           </p>
         </div>
 
@@ -116,7 +119,8 @@ export default function AboutUsPage() {
             Leadership & Craft
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            The team continuously refining SprintFlow for high-performance engineering organizations.
+            The team continuously refining SprintFlow for high-performance
+            engineering organizations.
           </p>
         </div>
 
@@ -128,7 +132,10 @@ export default function AboutUsPage() {
             >
               <div className="flex items-center justify-between">
                 <span className="flex size-11 items-center justify-center rounded-full bg-primary/15 font-heading text-sm font-bold text-primary">
-                  {member.name.split(" ").map((n) => n[0]).join("")}
+                  {member.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
                 </span>
                 <span className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
                   {member.badge}
@@ -137,9 +144,7 @@ export default function AboutUsPage() {
               <h3 className="mt-4 text-base font-semibold text-foreground">
                 {member.name}
               </h3>
-              <p className="text-xs font-medium text-primary">
-                {member.role}
-              </p>
+              <p className="text-xs font-medium text-primary">{member.role}</p>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 {member.bio}
               </p>
@@ -154,7 +159,8 @@ export default function AboutUsPage() {
           Ready to bring rhythm to your development sprints?
         </h2>
         <p className="mx-auto max-w-xl text-sm text-muted-foreground leading-relaxed">
-          Test all three organizational roles with one-click evaluation logins or register a new workspace for your engineering squad today.
+          Test all three organizational roles with one-click evaluation logins
+          or register a new workspace for your engineering squad today.
         </p>
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
           <Link

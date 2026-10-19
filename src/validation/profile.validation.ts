@@ -5,16 +5,15 @@ export const updateProfileSchema = z.object({
     .string({ message: "Name is required" })
     .min(2, "Name must be at least 2 characters")
     .max(80, "Name must be less than 80 characters"),
-  bio: z
-    .string()
-    .max(300, "Bio must be less than 300 characters")
-    .optional(),
+  bio: z.string().max(300, "Bio must be less than 300 characters").optional(),
   avatarUrl: z.string().url("Invalid URL").optional().or(z.literal("")),
 });
 
 export const changePasswordSchema = z
   .object({
-    currentPassword: z.string({ message: "Current password is required" }).min(1),
+    currentPassword: z
+      .string({ message: "Current password is required" })
+      .min(1),
     newPassword: z
       .string({ message: "New password is required" })
       .min(8, "Password must be at least 8 characters"),

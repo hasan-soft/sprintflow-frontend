@@ -129,21 +129,21 @@ export default function Footer() {
                   href="tel:+18004128900"
                   className="transition hover:text-primary font-mono text-[11px]"
                 >
-                  +1 (800) 412-8900
+                  +88 01719103858
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <span className="flex size-7 items-center justify-center rounded-lg border border-border/80 bg-muted/40 text-primary shrink-0">
                   <MapPin className="size-3.5" />
                 </span>
-                <span>Silicon Valley, CA, United States</span>
+                <span>Dhaka, Bhangladesh</span>
               </li>
               <li className="flex items-center gap-3 pt-1 text-[11px]">
                 <span className="flex size-7 items-center justify-center rounded-lg border border-border/80 bg-muted/40 text-primary shrink-0">
                   <Clock className="size-3.5" />
                 </span>
                 <span>
-                  Mon – Fri, 9:00 AM – 6:00 PM PST (Live chat support)
+                  Mun – Sun, 9:00 AM – 6:00 PM GMT (Live chat support)
                 </span>
               </li>
             </ul>
@@ -163,7 +163,7 @@ export default function Footer() {
               </p>
               <div className="flex items-center gap-2">
                 <a
-                  href="https://github.com"
+                  href="https://github.com/hasan-soft"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="GitHub"
@@ -179,7 +179,7 @@ export default function Footer() {
                   </svg>
                 </a>
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/in/hasan-soft/"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="LinkedIn"

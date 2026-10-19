@@ -60,7 +60,9 @@ export default function FeaturesPage() {
             <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 font-mono text-xs font-bold text-primary">
               {feature.number}
             </div>
-            <h2 className="mt-4 text-xl font-semibold text-foreground">{feature.title}</h2>
+            <h2 className="mt-4 text-xl font-semibold text-foreground">
+              {feature.title}
+            </h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               {feature.body}
             </p>

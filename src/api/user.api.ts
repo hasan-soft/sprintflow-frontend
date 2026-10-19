@@ -33,3 +33,32 @@ export function updateUserRole(id: string, role: UserRole) {
 export function updateCurrentUser(payload: { name?: string }) {
   return apiClient("/users/me", { method: "PATCH", body: payload });
 }
+
+export function getAuditLogs() {
+  return apiClient<
+    ApiEnvelope<
+      Array<{
+        id: string;
+        action: string;
+        details?: string | null;
+        createdAt: string;
+        user: { id: string; name: string; email: string; role: string };
+        task?: { id: string; title: string } | null;
+      }>
+    >
+  >("/users/admin/logs");
+}
+
+export function getMyActivities() {
+  return apiClient<
+    ApiEnvelope<
+      Array<{
+        id: string;
+        action: string;
+        details?: string | null;
+        createdAt: string;
+        task?: { id: string; title: string } | null;
+      }>
+    >
+  >("/users/me/activities");
+}

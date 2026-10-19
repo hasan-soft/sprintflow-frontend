@@ -63,7 +63,10 @@ export default function ProfileSettingsForm() {
       onSubmit={form.handleSubmit(saveProfile)}
     >
       <div>
-        <label className="text-xs font-semibold tracking-wide text-foreground" htmlFor="profile-name">
+        <label
+          className="text-xs font-semibold tracking-wide text-foreground"
+          htmlFor="profile-name"
+        >
           Full Name
         </label>
         <input
@@ -80,7 +83,10 @@ export default function ProfileSettingsForm() {
       </div>
 
       <div>
-        <label className="text-xs font-semibold tracking-wide text-foreground" htmlFor="profile-email">
+        <label
+          className="text-xs font-semibold tracking-wide text-foreground"
+          htmlFor="profile-email"
+        >
           Email Address
         </label>
         <input
@@ -92,7 +98,10 @@ export default function ProfileSettingsForm() {
       </div>
 
       <div>
-        <label className="text-xs font-semibold tracking-wide text-foreground" htmlFor="profile-role">
+        <label
+          className="text-xs font-semibold tracking-wide text-foreground"
+          htmlFor="profile-role"
+        >
           Workspace Role
         </label>
         <input

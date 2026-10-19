@@ -33,3 +33,21 @@ export function getPaymentStatus(id: string) {
     `/payments/${encodeURIComponent(id)}`,
   );
 }
+
+export function getSubscriptionsHistory() {
+  return apiClient<
+    ApiEnvelope<
+      Array<{
+        id: string;
+        amount: number;
+        currency: string;
+        plan: "FREE" | "PRO" | "ENTERPRISE";
+        status: "PENDING" | "COMPLETED" | "FAILED" | "CANCELLED";
+        gateway: string;
+        transactionId: string;
+        createdAt: string;
+        organization?: { name: string; slug: string };
+      }>
+    >
+  >("/payments/subscriptions");
+}

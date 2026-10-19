@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import CheckoutButton from "@/components/modules/admin/CheckoutButton";
-import { useProjects } from "@/hooks";
+import { useProjects, useSubscriptionsHistory } from "@/hooks";
 
 interface Invoice {
   id: string;
@@ -78,6 +78,7 @@ const ITEMS_PER_PAGE = 3;
 
 export default function AdminBillingPage() {
   const projectsQuery = useProjects();
+  const subscriptionsQuery = useSubscriptionsHistory();
   const [organizationId, setOrganizationId] = useState("");
   const [plan, setPlan] = useState<"PRO" | "ENTERPRISE">("PRO");
 
@@ -100,8 +101,31 @@ export default function AdminBillingPage() {
       setOrganizationId(organizations[0][0]);
   }, [organizationId, organizations]);
 
+  const allInvoices = useMemo(() => {
+    const subs = subscriptionsQuery.data?.data;
+    if (subs && subs.length > 0) {
+      return subs.map((s, idx) => ({
+        id: s.id,
+        invoiceNumber: `INV-${new Date(s.createdAt).getFullYear()}-${String(
+          subs.length - idx,
+        ).padStart(3, "0")}`,
+        date: new Date(s.createdAt).toLocaleDateString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        }),
+        plan: `${s.plan.charAt(0) + s.plan.slice(1).toLowerCase()} Workspace`,
+        amount: `$${s.amount.toFixed(2)} ${s.currency}`,
+        status: (s.status === "COMPLETED" ? "Paid" : "Processing") as
+          | "Paid"
+          | "Processing",
+      }));
+    }
+    return INVOICE_HISTORY;
+  }, [subscriptionsQuery.data]);
+
   const filteredInvoices = useMemo(() => {
-    return INVOICE_HISTORY.filter((inv) => {
+    return allInvoices.filter((inv) => {
       if (searchTerm.trim()) {
         const q = searchTerm.toLowerCase();
         const matchesNum = inv.invoiceNumber.toLowerCase().includes(q);
@@ -112,7 +136,7 @@ export default function AdminBillingPage() {
         return false;
       return true;
     });
-  }, [searchTerm, selectedStatus]);
+  }, [allInvoices, searchTerm, selectedStatus]);
 
   const totalPages = Math.ceil(filteredInvoices.length / ITEMS_PER_PAGE) || 1;
   const paginatedInvoices = useMemo(() => {

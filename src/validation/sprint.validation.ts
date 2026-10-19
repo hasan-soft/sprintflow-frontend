@@ -14,7 +14,9 @@ export const createSprintSchema = z.object({
   projectId: z.string({ message: "Project is required" }),
 });
 
-export const updateSprintSchema = createSprintSchema.partial().omit({ projectId: true });
+export const updateSprintSchema = createSprintSchema
+  .partial()
+  .omit({ projectId: true });
 
 export type CreateSprintInput = z.infer<typeof createSprintSchema>;
 export type UpdateSprintInput = z.infer<typeof updateSprintSchema>;

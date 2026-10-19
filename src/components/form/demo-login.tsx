@@ -91,7 +91,6 @@ export default function DemoLogin() {
               key={demo.role}
             >
               <div>
-                
                 <div className="mt-2">
                   <h4 className="text-sm font-semibold text-foreground">
                     {demo.label}
@@ -103,7 +102,10 @@ export default function DemoLogin() {
                     {demo.email}
                   </p>
                   <p className="mt-0.5 font-mono text-[10px] text-muted-foreground/80">
-                    Pass: <span className="font-semibold text-foreground">admin123</span>
+                    Pass:{" "}
+                    <span className="font-semibold text-foreground">
+                      admin123
+                    </span>
                   </p>
                 </div>
               </div>

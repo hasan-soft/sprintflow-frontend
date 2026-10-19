@@ -18,6 +18,24 @@ export function getProjects(query: ProjectQuery = {}) {
   );
 }
 
+export function getPublicProjects(query: ProjectQuery = {}) {
+  const params = new URLSearchParams({
+    page: query.page ?? "1",
+    limit: query.limit ?? "50",
+  });
+  if (query.searchTerm) params.set("searchTerm", query.searchTerm);
+  if (query.status) params.set("status", query.status);
+  return apiClient<ApiEnvelope<WorkspaceProject[]>>(
+    `/projects/public?${params.toString()}`,
+  );
+}
+
+export function getPublicProject(id: string) {
+  return apiClient<ApiEnvelope<WorkspaceProject>>(
+    `/projects/public/${encodeURIComponent(id)}`,
+  );
+}
+
 export function createProject(payload: CreateProjectPayload) {
   return apiClient<ApiEnvelope<WorkspaceProject>>("/projects", {
     method: "POST",

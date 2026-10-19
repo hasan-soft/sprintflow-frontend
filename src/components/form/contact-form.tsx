@@ -10,7 +10,9 @@ import { z } from "zod";
 const contactSchema = z.object({
   name: z.string().min(2, "Please enter your full name."),
   email: z.email("Enter a valid work email address."),
-  message: z.string().min(12, "Please provide at least 12 characters explaining your inquiry."),
+  message: z
+    .string()
+    .min(12, "Please provide at least 12 characters explaining your inquiry."),
 });
 
 type ContactValues = z.infer<typeof contactSchema>;
@@ -39,7 +41,10 @@ export default function ContactForm() {
       onSubmit={form.handleSubmit(submit)}
     >
       <div>
-        <label className="text-xs font-semibold tracking-wide text-foreground" htmlFor="contact-name">
+        <label
+          className="text-xs font-semibold tracking-wide text-foreground"
+          htmlFor="contact-name"
+        >
           Full Name
         </label>
         <input
@@ -57,7 +62,10 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="text-xs font-semibold tracking-wide text-foreground" htmlFor="contact-email">
+        <label
+          className="text-xs font-semibold tracking-wide text-foreground"
+          htmlFor="contact-email"
+        >
           Work Email
         </label>
         <input
@@ -76,7 +84,10 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="text-xs font-semibold tracking-wide text-foreground" htmlFor="contact-message">
+        <label
+          className="text-xs font-semibold tracking-wide text-foreground"
+          htmlFor="contact-message"
+        >
           How can we help your team?
         </label>
         <textarea
@@ -117,7 +128,10 @@ export default function ContactForm() {
           className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs font-medium text-emerald-700 dark:text-emerald-400"
         >
           <CheckCircle2 className="size-4 shrink-0" />
-          <span>Your message has been received! Our team will get back to you shortly.</span>
+          <span>
+            Your message has been received! Our team will get back to you
+            shortly.
+          </span>
         </div>
       )}
     </form>

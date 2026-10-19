@@ -4,9 +4,14 @@ import {
   createProject,
   createSprint,
   getAdminStats,
+  getAuditLogs,
+  getMyActivities,
   getMyAssignedTasks,
   getProjectSprints,
   getProjects,
+  getPublicProject,
+  getPublicProjects,
+  getSubscriptionsHistory,
   getTasks,
   getUsers,
   updateCurrentUser,
@@ -173,3 +178,44 @@ export function useUpdateProfile() {
 
 // Alias for getTasks
 export const useTasks = useGetTasks;
+
+export function usePublicProjects(query: ProjectQuery = {}) {
+  return useQuery({
+    queryKey: ["public-projects", query],
+    queryFn: () => getPublicProjects(query),
+    staleTime: 60_000,
+  });
+}
+
+export function usePublicProject(id: string) {
+  return useQuery({
+    queryKey: ["public-project", id],
+    queryFn: () => getPublicProject(id),
+    enabled: Boolean(id),
+    staleTime: 60_000,
+  });
+}
+
+export function useSubscriptionsHistory() {
+  return useQuery({
+    queryKey: ["subscriptions-history"],
+    queryFn: getSubscriptionsHistory,
+    staleTime: 30_000,
+  });
+}
+
+export function useAuditLogs() {
+  return useQuery({
+    queryKey: ["admin-audit-logs"],
+    queryFn: getAuditLogs,
+    staleTime: 30_000,
+  });
+}
+
+export function useMemberActivities() {
+  return useQuery({
+    queryKey: ["member-activities"],
+    queryFn: getMyActivities,
+    staleTime: 30_000,
+  });
+}

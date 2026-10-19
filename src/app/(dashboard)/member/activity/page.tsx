@@ -10,6 +10,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useMemberActivities } from "@/hooks";
 
 interface MemberActivity {
   id: string;
@@ -90,9 +91,62 @@ export default function MemberActivityPage() {
   const [selectedType, setSelectedType] = useState<string>("All");
   const [selectedStatus, setSelectedStatus] = useState<string>("All");
   const [currentPage, setCurrentPage] = useState(1);
+  const activitiesQuery = useMemberActivities();
+
+  const allActivities: MemberActivity[] = useMemo(() => {
+    const raw = activitiesQuery.data?.data;
+    if (Array.isArray(raw) && raw.length > 0) {
+      return raw.map(
+        (item: {
+          id: string;
+          action: string;
+          details?: string | null;
+          createdAt: string;
+          task?: { id: string; title: string } | null;
+        }) => {
+          let actType: MemberActivity["type"] = "Task Completed";
+          const actionLower = item.action.toLowerCase();
+          if (actionLower.includes("pr") || actionLower.includes("review")) {
+            actType = "Code Review";
+          } else if (
+            actionLower.includes("sprint") ||
+            actionLower.includes("planning")
+          ) {
+            actType = "Sprint Planning";
+          } else if (
+            actionLower.includes("blocker") ||
+            actionLower.includes("fix")
+          ) {
+            actType = "Blocker Resolved";
+          }
+
+          const project = item.task?.title || "SprintFlow AI Core";
+          const ticketId = item.task?.id
+            ? `SF-${item.task.id.slice(-3).toUpperCase()}`
+            : `SF-${item.id.slice(-3).toUpperCase()}`;
+
+          return {
+            id: item.id,
+            title: item.action,
+            type: actType,
+            project,
+            ticketId,
+            status: "Completed",
+            timestamp: new Date(item.createdAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          };
+        },
+      );
+    }
+    return MEMBER_ACTIVITIES;
+  }, [activitiesQuery.data]);
 
   const filteredActivities = useMemo(() => {
-    return MEMBER_ACTIVITIES.filter((act) => {
+    return allActivities.filter((act) => {
       if (searchTerm.trim()) {
         const q = searchTerm.toLowerCase();
         const matchesTitle = act.title.toLowerCase().includes(q);
@@ -105,7 +159,7 @@ export default function MemberActivityPage() {
         return false;
       return true;
     });
-  }, [searchTerm, selectedType, selectedStatus]);
+  }, [allActivities, searchTerm, selectedType, selectedStatus]);
 
   const totalPages = Math.ceil(filteredActivities.length / ITEMS_PER_PAGE) || 1;
   const paginatedActivities = useMemo(() => {
@@ -142,7 +196,7 @@ export default function MemberActivityPage() {
             Total Contributions
           </p>
           <p className="mt-2 font-heading text-2xl font-bold text-foreground">
-            {MEMBER_ACTIVITIES.length}
+            {allActivities.length}
           </p>
         </div>
         <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-2xs">
@@ -150,10 +204,7 @@ export default function MemberActivityPage() {
             Tasks Completed
           </p>
           <p className="mt-2 font-heading text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-            {
-              MEMBER_ACTIVITIES.filter((a) => a.type === "Task Completed")
-                .length
-            }
+            {allActivities.filter((a) => a.type === "Task Completed").length}
           </p>
         </div>
         <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-2xs">
@@ -161,7 +212,7 @@ export default function MemberActivityPage() {
             Code Reviews
           </p>
           <p className="mt-2 font-heading text-2xl font-bold text-primary">
-            {MEMBER_ACTIVITIES.filter((a) => a.type === "Code Review").length}
+            {allActivities.filter((a) => a.type === "Code Review").length}
           </p>
         </div>
         <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-2xs">
@@ -169,10 +220,7 @@ export default function MemberActivityPage() {
             Blockers Cleared
           </p>
           <p className="mt-2 font-heading text-2xl font-bold text-foreground">
-            {
-              MEMBER_ACTIVITIES.filter((a) => a.type === "Blocker Resolved")
-                .length
-            }
+            {allActivities.filter((a) => a.type === "Blocker Resolved").length}
           </p>
         </div>
       </section>
